@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { Brand } from "../../models/Brand";
+import { Brand } from "../../models/brand";
 
 const actionPrefix = '[Brands] ';
 

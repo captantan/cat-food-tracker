@@ -1,0 +1,80 @@
+import { createSelector } from "reselect";
+import { State } from "../state";
+import { sort, ascend, groupBy } from 'ramda';
+import { brandDictionary } from "./brands.selectors";
+import { Meal, MealEntry, MealFormModel } from "../../models/meal";
+import { format, parseISO } from 'date-fns';
+
+const mealsFeatureSelector = (state: State) => state.meals;
+
+const mealDictionary = createSelector(mealsFeatureSelector, (f) => f.data);
+
+export const mealListVM = createSelector(mealDictionary, brandDictionary, (mD, bD) => {
+  const allMeals = Object.values(mD);
+  const mealsByDate = groupBy((m) => m.date, allMeals);
+
+  const mealsByDateSorted = sort(ascend(([date]) => date), Object.entries(mealsByDate));
+
+  return mealsByDateSorted.map(([date,meals]) => {
+    const mealsGrouped = groupBy((m) => m.meal, meals);
+    const parsed = parseISO(date);
+    const formatted = format(parsed, 'PPPP');
+
+    return {
+      date,
+      parsed, formatted,
+      meals: Object.values(Meal).reduce((dict, mealType) =>{
+        const mealsForType = mealsGrouped[mealType] ?? [];
+
+        dict[mealType] = sort(ascend((m) => m.order), mealsForType.map((m) => {
+          const brand = bD[m.brand];
+          const flavor = brand.flavors[m.flavor];
+
+          return {
+            ...m,
+            brandName: brand.name,
+            flavorName: flavor.name,
+          };
+        }));
+        
+        return dict;
+      }, {} as Record<Meal, Array<MealEntry & {brandName: string, flavorName: string}>>),
+    }
+  })
+
+});
+
+const editState = createSelector(mealsFeatureSelector, (f) => f.edit);
+
+export const editId = createSelector(editState, (e) => e.mealId);
+export const isEditOpen = createSelector(editState, (e) => e.editOpen);
+export const currentData = createSelector(editId, mealDictionary, (id, b) => {
+  if (!id) {
+    return null;
+  }
+
+  return b[id] ?? null;
+});
+
+export const prefilDate = createSelector(editState, (s) => s.prefillDate ? parseISO(s.prefillDate) : null);
+export const prefilMeal = createSelector(editState, (s) => s.prefillMeal);
+
+export const initialFormValues = createSelector(currentData, prefilDate, prefilMeal, (cd, date, meal) => {
+  const initialValues: MealFormModel = cd ? {
+    date: parseISO(cd.date),
+    meal: cd.meal,
+    amount: cd.amount ?? '',
+    brand: cd.brand,
+    flavor: cd.flavor,
+    notes: cd.notes,
+  } : {
+    date: date ?? new Date(), // TODO: not deterministic...
+    meal: meal ?? Meal.Breakfast,
+    amount: '',
+    brand: '', 
+    flavor: '',
+    notes: '',
+  };
+
+  return initialValues;
+})

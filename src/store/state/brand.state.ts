@@ -1,4 +1,4 @@
-import { Brand } from "../models/Brand";
+import { Brand } from "../../models/brand";
 
 export type BrandListState = Record<string, Brand>;
 
@@ -12,13 +12,4 @@ export interface BrandEditState {
 export interface BrandsState {
   data: BrandListState;
   edit: BrandEditState;
-}
-
-export interface UIState {
-  drawerOpen: boolean;
-}
-
-export interface State {
-  brands: BrandsState;
-  ui: UIState
 }

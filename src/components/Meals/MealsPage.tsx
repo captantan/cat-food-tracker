@@ -1,11 +1,18 @@
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Toolbar, Typography, Dialog } from '@mui/material';
 import React from 'react';
 import { ClassNames } from '@emotion/react';
-import { useSelector } from 'react-redux';
-import { brandsSelectors } from '../../store/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { brandsSelectors, mealSelectors } from '../../store/selectors';
 import { AppHeader } from '../AppHeader';
+import { MealList } from './MealList';
+import { Link } from 'react-router-dom';
+import { mealActions } from '../../store/actions';
+import { AddEditMeal } from './AddEditMeal';
 
 export const MealsPage: React.FC = () => {
+  const dispatch = useDispatch();
+  
+  const editModalOpen = useSelector(mealSelectors.isEditOpen);
   const hasAnyFlavors = useSelector(brandsSelectors.hasAnyFlavors);
 
   return (
@@ -13,24 +20,17 @@ export const MealsPage: React.FC = () => {
       <AppHeader title="Meals"></AppHeader>
 
       <Box component="main" sx={{ padding: 3, flex: '1 0 auto' }}>
-        <ClassNames>
-          {({ css, cx }) => (
-            <div className={cx('main-body', css`
-          flex: 1 0 auto;
-
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          
-          padding: 16px;
-        `)}>
-              <Typography variant="h6" component="h1">Under Construction</Typography>
-              <Typography variant="body1" component="p">This page is under construction, please come back later to check it out.</Typography>
-            </div>
-          )}
-        </ClassNames>
+        {hasAnyFlavors ? <MealList></MealList> : (
+          <>
+            <Typography variant="body1">You must have foods loaded to enter meals</Typography>
+            <Button component={Link} to='../brands'>Enter foods</Button>
+          </>
+        )}
       </Box>
+
+      <Dialog open={editModalOpen} onClose={() => dispatch(mealActions.cancelEditMeal())}>
+        <AddEditMeal></AddEditMeal>
+      </Dialog>
     </>
   );
 }

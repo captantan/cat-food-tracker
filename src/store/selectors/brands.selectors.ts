@@ -4,7 +4,7 @@ import { ascend, sort } from 'ramda';
 
 const brandFeatureSelector = (state: State) => state.brands;
 
-const brandDictionary = createSelector(brandFeatureSelector, (f) => f.data);
+export const brandDictionary = createSelector(brandFeatureSelector, (f) => f.data);
 
 export const brandListVM = createSelector(brandDictionary, (b) => {
   const brands = Object.values(b);
@@ -43,4 +43,25 @@ export const currentTagList = createSelector(currentFlavor, f => f?.tags ?? []);
 
 export const hasAnyFlavors = createSelector(brandDictionary, (b) => 
   Object.values(b).some(({flavors}) => Object.values(flavors).length)
-)
+);
+
+export const brandSelectList = createSelector(brandDictionary, (bD) => {
+  const brands = Object.values(bD);
+  const mapped = brands.map((b) => ({id: b.id, name: b.name}));
+
+  return sort(ascend((b) => b.name), mapped);
+});
+
+export const getFlavorsForBrand = createSelector(brandDictionary, (bD) => {
+  return (brandId: string) => {
+    const brand = bD[brandId];
+    if (!brand) {
+      return [];
+    }
+
+    const flavors = Object.values(brand.flavors);
+    const mapped = flavors.map((f) => ({id: f.id, name: f.name}));
+
+    return sort(ascend((f) => f.name), mapped);
+  }
+});

@@ -8,6 +8,8 @@ import theme from './theme';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store/configure';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,6 +17,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
@@ -22,6 +25,7 @@ root.render(
           <App />
         </ThemeProvider>
       </BrowserRouter>
+      </LocalizationProvider>
     </Provider>
   </React.StrictMode>
 );

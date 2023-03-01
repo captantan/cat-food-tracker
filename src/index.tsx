@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/configure';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AppMsalProvider } from './auth/Provider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,13 +19,15 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
-      </BrowserRouter>
+        <BrowserRouter>
+          <AppMsalProvider>
+            <ThemeProvider theme={theme}>
+              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+              <CssBaseline />
+              <App />
+            </ThemeProvider>
+          </AppMsalProvider>
+        </BrowserRouter>
       </LocalizationProvider>
     </Provider>
   </React.StrictMode>

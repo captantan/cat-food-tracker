@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
-import { State } from "../state";
+import { State } from "../../../store/state";
 import { ascend, sort } from 'ramda';
 
-const brandFeatureSelector = (state: State) => state.brands;
+const brandFeatureSelector = (state: State) => state.edit.brands;
 
 export const brandDictionary = createSelector(brandFeatureSelector, (f) => f.data);
 

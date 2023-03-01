@@ -1,11 +1,11 @@
 import { createSelector } from "reselect";
-import { State } from "../state";
+import { State } from "../../../store/state";
 import { sort, ascend, groupBy } from 'ramda';
 import { brandDictionary } from "./brands.selectors";
 import { Meal, MealEntry, MealFormModel } from "../../models/meal";
 import { format, parseISO } from 'date-fns';
 
-const mealsFeatureSelector = (state: State) => state.meals;
+const mealsFeatureSelector = (state: State) => state.edit.meals;
 
 const mealDictionary = createSelector(mealsFeatureSelector, (f) => f.data);
 

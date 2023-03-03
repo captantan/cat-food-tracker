@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { brandsActions } from "../../actions";
+import { brandsActions, fileActions } from "../../actions";
 import { BrandListState } from "../../state";
 
 export const brandDataReducer = createReducer<BrandListState>(
@@ -38,5 +38,9 @@ export const brandDataReducer = createReducer<BrandListState>(
           }
         }};
       }
+    )
+    .addCase(
+      fileActions.loadFileSucceeded,
+      (_state, action) => action.payload.brands
     )
 );

@@ -2,7 +2,7 @@ import { InteractionType } from '@azure/msal-browser';
 import { MsalAuthenticationTemplate } from '@azure/msal-react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { loginRequest } from './auth/config';
-import { createEditFeature } from './Edit/EditFeture';
+import { EditFeature } from './Edit/EditFeature';
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
     loadingComponent={() => <p>Loading...</p>}>
       <Routes>
         <Route index element={<Navigate to="/edit" />}/>
-        {createEditFeature('/edit')}
+        <Route path="edit/:fileId/*" element={<EditFeature />} />
       </Routes>
     </MsalAuthenticationTemplate>
   );

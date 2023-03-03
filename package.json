@@ -58,7 +58,6 @@
   },
   "devDependencies": {
     "@types/ramda": "^0.28.23",
-    "@types/uuid": "^9.0.1",
-    "redux-devtools-extension": "^2.13.9"
+    "@types/uuid": "^9.0.1"
   }
 }

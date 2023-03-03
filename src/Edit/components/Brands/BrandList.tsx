@@ -18,9 +18,11 @@ export const BrandList: React.FC = () => {
           {brand.flavors.length ? <TableContainer>
             <Table>
               <TableHead>
-                <TableCell>Flavor</TableCell>
-                <TableCell>Tags</TableCell>
-                <TableCell></TableCell>
+                <TableRow>
+                  <TableCell>Flavor</TableCell>
+                  <TableCell>Tags</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
               </TableHead>
               <TableBody>
                 {brand.flavors.map((flavor) => (

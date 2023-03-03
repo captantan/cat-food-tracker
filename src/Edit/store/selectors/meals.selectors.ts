@@ -30,6 +30,10 @@ export const mealListVM = createSelector(mealDictionary, brandDictionary, (mD, b
           const brand = bD[m.brand];
           const flavor = brand.flavors[m.flavor];
 
+          if (!flavor) {
+            console.error('Could not find flavor for meal', brand, m);
+          }
+
           return {
             ...m,
             brandName: brand.name,

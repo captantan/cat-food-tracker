@@ -56,10 +56,5 @@ export const BrandList: React.FC = () => {
         </Card>
       )) : <Typography component="p" variant="caption">No brands, yet</Typography>}
     </Box>
-    <Box sx={{maxWidth: 960, width: '100%', m: '0 auto', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
-      <Fab color="secondary" onClick={() => dispatch(brandsActions.newBrand())}>
-          <Icon>add</Icon>
-      </Fab>
-    </Box>
   </>)
 }

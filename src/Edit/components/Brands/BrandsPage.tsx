@@ -1,4 +1,4 @@
-import { Dialog , Box} from '@mui/material';
+import { Dialog , Box, Fab, Icon } from '@mui/material';
 import React from 'react';
 import { BrandList } from './BrandList';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,8 +17,13 @@ export const BrandsPage: React.FC = () => {
   return (<>
     <AppHeader title="Brands"></AppHeader>
     
-    <Box component="main" sx={{padding: 3, flex: '1 0 auto'}}>
+    <Box component="main" sx={{padding: 3, pb: 1, flex: '1 0 auto'}}>
       <BrandList></BrandList>
+    </Box>
+    <Box sx={{maxWidth: 960, width: '100%', m: '0 auto', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', position: 'sticky', bottom: '16px', mb: 2, mt: 1}}>
+      <Fab color="secondary" onClick={() => dispatch(brandsActions.newBrand())}>
+          <Icon>add</Icon>
+      </Fab>
     </Box>
     
     <Dialog open={editBrandOpen} onClose={() => dispatch(brandsActions.cancelEditBrand())}>

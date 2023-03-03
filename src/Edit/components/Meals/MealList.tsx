@@ -28,14 +28,14 @@ export const MealList: React.FC = () => {
                 <Typography variant='h5' color={mealType.color}>{mealType.title}</Typography>
                 <Divider sx={{borderBottomColor: mealType.color}}></Divider>
                 {date.meals[mealType.meal].length ? date.meals[mealType.meal].map((m) => (
-                  <Box key={m.id} sx={{display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'auto auto auto', gap: 1}}>
+                  <Box key={m.id} sx={{display: 'grid', gridTemplateColumns: '1fr 1fr auto', gridTemplateRows: 'auto auto', gap: 1}}>
                     <Box>
-                      <Typography variant="body1">{m.flavorName}</Typography>
+                      <Typography variant="body1" gutterBottom={false}>{m.flavorName}</Typography>
                       <Typography variant="caption">{m.brandName}</Typography>
                     </Box>
                     <Typography variant="body1">{m.amount && eatenAmountDisplays[m.amount]}</Typography>
-                    <Typography variant="caption" sx={{gridColumnStart: 1, gridColumnEnd: 2}}>{m.notes}</Typography>
-                    <Box sx={{gridColumnStart: 1, gridColumnEnd: 2}}>
+                    <Typography variant="caption" sx={{gridColumnStart: 1, gridColumnEnd: 3, gridRow: 2}}>{m.notes}</Typography>
+                    <Box sx={{gridColumn: 3, gridRow: 1}}>
                       <Button onClick={() => dispatch(mealActions.editMeal(m.id))}>Edit</Button>
                     </Box>
                   </Box>
@@ -44,17 +44,15 @@ export const MealList: React.FC = () => {
                     <Typography variant="caption">No entries for this meal</Typography>
                   </Box>
                 )}
-                <Button onClick={() => dispatch(mealActions.newMeal({date: date.date, meal: mealType.meal}))}>Enter Meal</Button>
+                <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'baseline', flexDirection: 'row'}}>
+                  <Button onClick={() => dispatch(mealActions.newMeal({date: date.date, meal: mealType.meal}))}>Enter Meal</Button>
+                </Box>
               </Box>
             ))}
           </CardContent>
         </Card>
       )) : <Typography component="p" variant="caption">No meals, yet</Typography>}
     </Box>
-    <Box sx={{maxWidth: 960, width: '100%', m: '0 auto', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
-      <Fab color="secondary" onClick={() => dispatch(mealActions.newMeal({date: null, meal: null}))}>
-          <Icon>add</Icon>
-      </Fab>
-    </Box>
+
   </>)
 }

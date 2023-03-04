@@ -3,8 +3,9 @@ import { State } from "../../../store/state";
 import { ascend, sort } from 'ramda';
 
 const featureState = (state: State) => state.edit.fileLoading;
+const saveFeatureState = (state: State) => state.edit.save;
 
-export const status = createSelector(featureState, (f) => {
+export const status = createSelector(featureState, saveFeatureState, (f, s) => {
   switch(f.status) {
     case 'none':
     case 'loading':
@@ -12,7 +13,16 @@ export const status = createSelector(featureState, (f) => {
     case 'error':
       return 'error';
     case 'done': 
-      return 'done';
+      switch(s.status) {
+        case 'none':
+          return 'content'
+          case 'loading':
+            return 'saving';
+          case 'error':
+            return 'save-failed';
+          case 'done':
+            return 'saved'
+      }
   }
 });
 

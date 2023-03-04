@@ -11,5 +11,6 @@ export interface EditState {
   brands: BrandsState;
   meals: MealsState;
   fileLoading: LoadingState;
+  save: LoadingState;
   ui: UIState;
 }

@@ -16,13 +16,9 @@ export const EditFeature: React.FC = () => {
   const status = useSelector(fileLoadingSelectors.status);
   const error = useSelector(fileLoadingSelectors.error);
 
-  const fileId = useParams().fileId;
+  const fileId = useParams().fileId!;
   React.useEffect(() => {
-    if (!fileId) {
-      console.error('missing file id');
-    } else {
-      dispatch(fileActions.loadFile(fileId));
-    }
+    dispatch(fileActions.loadFile(fileId));
   }, [fileId]);
 
   switch(status) {
@@ -41,7 +37,7 @@ export const EditFeature: React.FC = () => {
         }}>Retry</Button>
       </>
     )
-    case 'done':
+    case 'content':
   return (
     <Routes>
       <Route element={<DataPageFrame />}>
@@ -51,5 +47,25 @@ export const EditFeature: React.FC = () => {
       </Route>
     </Routes>
   );
+  case 'saving': return (<p>Loading the file...</p>);
+    case 'save-failed': return (
+      <>
+        <p>Failed to save</p>
+        <pre>Error Code: {error}</pre>
+
+        <Button onClick={() => {
+          dispatch(fileActions.saveFile(fileId));
+        }}>Retry</Button>
+      </>
+    )
+    case 'saved':
+      return (
+        <>
+        <p>Successfully saved</p>
+        <Button onClick={() => dispatch(fileActions.returnToContent())}>
+          Return to content
+        </Button>
+        </>
+      )
   }
 }

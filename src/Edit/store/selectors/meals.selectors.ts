@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { State } from "../../../store/state";
-import { sort, ascend, groupBy } from 'ramda';
+import { sort, ascend, groupBy, descend } from 'ramda';
 import { brandDictionary } from "./brands.selectors";
 import { Meal, MealEntry, MealFormModel } from "../../models/meal";
 import { format, parseISO } from 'date-fns';
@@ -13,7 +13,7 @@ export const mealListVM = createSelector(mealDictionary, brandDictionary, (mD, b
   const allMeals = Object.values(mD);
   const mealsByDate = groupBy((m) => m.date, allMeals);
 
-  const mealsByDateSorted = sort(ascend(([date]) => date), Object.entries(mealsByDate));
+  const mealsByDateSorted = sort(descend(([date]) => date), Object.entries(mealsByDate));
 
   return mealsByDateSorted.map(([date,meals]) => {
     const mealsGrouped = groupBy((m) => m.meal, meals);

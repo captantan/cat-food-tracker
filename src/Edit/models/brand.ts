@@ -4,9 +4,17 @@ export interface Flavor {
   tags: string[];
 }
 
-export interface Brand {
+export type FlavorDictionary = Record<string /* flavor id */, Flavor>;
+
+export interface BrandBase {
   id: string;
   name: string;
+}
 
-  flavors: Record<string, Flavor>;
+export interface Brand extends BrandBase {
+  flavors: FlavorDictionary;
+}
+
+export interface FileBrand extends BrandBase{
+  flavors: Flavor[];
 }

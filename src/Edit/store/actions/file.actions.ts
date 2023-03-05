@@ -2,11 +2,12 @@ import { Action, createAction, ThunkAction } from "@reduxjs/toolkit";
 import { msalInstance } from "../../../auth/client";
 import { loginRequest } from "../../../auth/config";
 import { State } from "../../../store/state";
+import { editActionPrefix } from "../../feature.const";
 import { FlavorDictionary } from "../../models/brand";
 import { fromSaveFile, SaveFileV1, toSaveFile } from "../../models/file";
 import { BrandListState, MealListState } from "../state";
 
-const actionPrefix = '[File] ';
+const actionPrefix = editActionPrefix + '[File] ';
 
 export const loadFileStarted = createAction(actionPrefix + 'Load Started');
 export const loadFileSucceeded = createAction<{ brands: BrandListState, meals: MealListState }>(actionPrefix + 'Load Succeeded');
@@ -60,7 +61,6 @@ export function loadFile(id: string): ThunkAction<Promise<void>, State, unknown,
     }
   }
 }
-
 
 export const saveFileStarted = createAction(actionPrefix + 'Save Started');
 export const saveFileSucceeded = createAction(actionPrefix + 'Save Succeeded');

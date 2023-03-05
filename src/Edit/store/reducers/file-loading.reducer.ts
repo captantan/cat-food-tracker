@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { LoadingState } from "../../../loading.state";
 import { fileActions } from "../actions";
-import { LoadingState } from "../state";
 
 export const fileLoadingReducer = createReducer<LoadingState>({status: 'none', error: null}, (builder) => 
   builder.addCase(fileActions.loadFileStarted, (state, _action) => ({

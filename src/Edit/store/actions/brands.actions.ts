@@ -1,7 +1,8 @@
 import { createAction } from "@reduxjs/toolkit";
+import { editActionPrefix } from "../../feature.const";
 import { Brand } from "../../models/brand";
 
-const actionPrefix = '[Brands] ';
+const actionPrefix = editActionPrefix + '[Brands] ';
 
 export const editBrand = createAction<string /* guid */>(actionPrefix + 'Edit');
 export const newBrand = createAction(actionPrefix + 'New');

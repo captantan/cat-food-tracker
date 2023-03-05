@@ -1,11 +1,7 @@
+import { LoadingState } from "../../../loading.state";
 import { BrandsState } from "./brand.state";
 import { MealsState } from "./meal.state";
 import { UIState } from "./ui.state";
-
-export interface LoadingState {
-  status: 'none' | 'loading' | 'error' | 'done';
-  error: number | null;
-}
 
 export interface EditState {
   brands: BrandsState;

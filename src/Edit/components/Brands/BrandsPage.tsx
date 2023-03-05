@@ -2,7 +2,7 @@ import { Dialog , Box, Fab, Icon } from '@mui/material';
 import React from 'react';
 import { BrandList } from './BrandList';
 import { useDispatch, useSelector } from 'react-redux';
-import { brandsSelectors, uiSelectors } from '../../store/selectors';
+import { brandsSelectors } from '../../store/selectors';
 import { AddEditBrand } from './AddEditBrand';
 import { brandsActions } from '../../store/actions';
 import { AddEditFlavor } from './AddEditFlavor';

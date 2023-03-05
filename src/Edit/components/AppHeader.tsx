@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Drawer, IconButton, Box, Icon } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Icon } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiSelectors } from '../store/selectors';

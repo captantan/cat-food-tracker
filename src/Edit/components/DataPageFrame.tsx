@@ -1,6 +1,5 @@
-import { AppBar, Toolbar, Typography, Drawer, IconButton, Box, Icon } from '@mui/material';
+import { Drawer, Box } from '@mui/material';
 import React from 'react';
-import { ClassNames } from '@emotion/react';
 import { Outlet } from 'react-router-dom';
 import { DrawerContent } from './DrawerContent';
 import { useDispatch, useSelector } from 'react-redux';

@@ -3,7 +3,6 @@ import { msalInstance } from "../../../auth/client";
 import { loginRequest } from "../../../auth/config";
 import { State } from "../../../store/state";
 import { editActionPrefix } from "../../feature.const";
-import { FlavorDictionary } from "../../models/brand";
 import { fromSaveFile, SaveFileV1, toSaveFile } from "../../models/file";
 import { BrandListState, MealListState } from "../state";
 

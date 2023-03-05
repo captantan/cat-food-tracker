@@ -1,6 +1,5 @@
-import { AppBar, Box, Button, Toolbar, Typography, Dialog, Fab, Icon } from '@mui/material';
+import { Box, Button, Typography, Dialog, Fab, Icon } from '@mui/material';
 import React from 'react';
-import { ClassNames } from '@emotion/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { brandsSelectors, mealSelectors } from '../../store/selectors';
 import { AppHeader } from '../AppHeader';

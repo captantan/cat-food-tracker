@@ -1,6 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
 import { editActionPrefix } from "../../feature.const";
-import { Brand } from "../../models/brand";
 
 const actionPrefix = editActionPrefix + '[Brands] ';
 

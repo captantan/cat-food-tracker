@@ -26,7 +26,6 @@ export const AddEditFlavor: React.FC = () => {
 
   const brandId = useSelector(brandsSelectors.editBrandId)
   const editId = useSelector(brandsSelectors.editFlavorId);
-  const isEdit = !!editId;
 
   const editName = useSelector(brandsSelectors.currentFlavorName);
   const editTags = useSelector(brandsSelectors.currentTagList);

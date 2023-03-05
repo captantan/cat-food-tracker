@@ -4,12 +4,12 @@ import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { formatISO, parseISO, subDays } from 'date-fns';
+import { formatISO, subDays } from 'date-fns';
 import { useFormik, FormikErrors } from 'formik';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidV4 } from 'uuid';
-import { EatenAmount, Meal, MealEntry, MealFormModel } from '../../models/meal';
+import { EatenAmount, MealEntry, MealFormModel } from '../../models/meal';
 import { mealActions } from '../../store/actions';
 import { brandsSelectors, mealSelectors } from '../../store/selectors';
 import { mealListTypeDate } from './MealList';
@@ -38,7 +38,7 @@ export const AddEditMeal: React.FC = () => {
 
     if (!values.brand) {
       errors.brand = 'Brand is required';
-    } else if (!brands.some((b) => b.id == values.brand)) {
+    } else if (!brands.some((b) => b.id === values.brand)) {
       errors.brand = 'Invalid brand';
     } else {
       const flavors = flavorsForBrand(values.brand);

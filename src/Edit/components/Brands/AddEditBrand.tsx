@@ -24,7 +24,6 @@ export const AddEditBrand: React.FC = () => {
   const dispatch = useDispatch();
 
   const editId = useSelector(brandsSelectors.editBrandId);
-  const isEdit = !!editId;
 
   const editName = useSelector(brandsSelectors.currentBrandName);
 

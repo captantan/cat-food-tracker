@@ -1,6 +1,5 @@
 import { createSelector } from "reselect";
 import { State } from "../../../store/state";
-import { ascend, sort } from 'ramda';
 
 const featureState = (state: State) => state.edit.fileLoading;
 const saveFeatureState = (state: State) => state.edit.save;

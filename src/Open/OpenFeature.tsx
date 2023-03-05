@@ -20,7 +20,7 @@ export const OpenFeature: React.FC = () => {
 
   React.useEffect(() => {
     dispatch(loadingActions.loadContent(path));
-  }, [path]);
+  }, [path, dispatch]);
 
   switch(status) {
     case 'loading': return (<p>Loading that folder...</p>);

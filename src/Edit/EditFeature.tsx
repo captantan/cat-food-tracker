@@ -19,7 +19,7 @@ export const EditFeature: React.FC = () => {
   const fileId = useParams().fileId!;
   React.useEffect(() => {
     dispatch(fileActions.loadFile(fileId));
-  }, [fileId]);
+  }, [fileId, dispatch]);
 
   switch(status) {
     case 'loading': return (<p>Loading the file...</p>);

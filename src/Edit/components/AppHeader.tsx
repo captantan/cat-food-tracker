@@ -38,7 +38,8 @@ export const AppHeader: React.FC<AppHeaderProps> = (props) => {
         {props.title}
       </Typography>
 
-      <IconButton aria-label="Save" onClick={() => dispatch(saveFile(fileId))}>
+      <IconButton 
+        color="inherit" aria-label="Save" onClick={() => dispatch(saveFile(fileId))}>
         <Icon>save</Icon>
       </IconButton>
     </Toolbar>

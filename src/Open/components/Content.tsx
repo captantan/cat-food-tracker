@@ -10,7 +10,8 @@ export const Content: React.FC<{path: string, folderName: string | null, isRoot:
     <>
     <AppBar color="primary" position="sticky">
       <Toolbar>
-        {!isRoot && <IconButton component={Link} to={backPath}>
+        {!isRoot && <IconButton component={Link} to={backPath} 
+        color="inherit" sx={{mr: 2}}>
             <Icon>arrow_back</Icon>
           </IconButton>}
           <Typography variant="h6" noWrap component="div" flex="1 1 auto">

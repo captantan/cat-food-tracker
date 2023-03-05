@@ -3,6 +3,8 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Route, Routes, useParams } from 'react-router-dom';
+import { ErrorDisplay } from '../components/ErrorDisplay';
+import { LoadingDisplay } from '../components/LoadingDisplay';
 import { store } from '../store/configure';
 import { BrandsPage } from './components/Brands/BrandsPage';
 import { DataPageFrame } from './components/DataPageFrame';
@@ -15,6 +17,7 @@ export const EditFeature: React.FC = () => {
   const dispatch = useDispatch<typeof store.dispatch>();
   const status = useSelector(fileLoadingSelectors.status);
   const error = useSelector(fileLoadingSelectors.error);
+  const saveError = useSelector(fileLoadingSelectors.saveError);
 
   const fileId = useParams().fileId!;
   React.useEffect(() => {
@@ -22,20 +25,11 @@ export const EditFeature: React.FC = () => {
   }, [fileId, dispatch]);
 
   switch(status) {
-    case 'loading': return (<p>Loading the file...</p>);
+    case 'loading': return (<LoadingDisplay text="Loading the file..."/>);
     case 'error': return (
-      <>
-        <p>An error occurred</p>
-        <pre>Error Code: {error}</pre>
-
-        <Button onClick={() => {
-          if (!fileId) {
-            console.error('missing file id');
-          } else {
-            dispatch(fileActions.loadFile(fileId));
-          }
-        }}>Retry</Button>
-      </>
+      <ErrorDisplay errorCode={error} onClick={() => {
+        dispatch(fileActions.loadFile(fileId));
+      }} />
     )
     case 'content':
   return (
@@ -47,16 +41,11 @@ export const EditFeature: React.FC = () => {
       </Route>
     </Routes>
   );
-  case 'saving': return (<p>Loading the file...</p>);
+  case 'saving': return (<LoadingDisplay text="Saving your changes..." />);
     case 'save-failed': return (
-      <>
-        <p>Failed to save</p>
-        <pre>Error Code: {error}</pre>
-
-        <Button onClick={() => {
-          dispatch(fileActions.saveFile(fileId));
-        }}>Retry</Button>
-      </>
+      <ErrorDisplay title="Failed to save" errorCode={saveError} onClick={() => {
+        dispatch(fileActions.saveFile(fileId));
+      }} />
     )
     case 'saved':
       return (

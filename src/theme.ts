@@ -14,6 +14,13 @@ const theme = createTheme({
       main: red.A400,
     },
   },
+  components: {
+    MuiIcon: {
+      defaultProps: {
+        baseClassName: 'material-symbols-rounded'
+      }
+    }
+  }
 });
 
 export default theme;

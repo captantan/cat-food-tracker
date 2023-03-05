@@ -1,7 +1,8 @@
-import { Button } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { ErrorDisplay } from "../components/ErrorDisplay";
+import { LoadingDisplay } from "../components/LoadingDisplay";
 import { store } from "../store/configure";
 import { Content } from "./components/Content";
 import { loadingActions } from "./store/actions";
@@ -23,16 +24,9 @@ export const OpenFeature: React.FC = () => {
   }, [path, dispatch]);
 
   switch(status) {
-    case 'loading': return (<p>Loading that folder...</p>);
+    case 'loading': return (<LoadingDisplay text="Getting folder content..." />);
     case 'error': return (
-      <>
-        <p>An error occurred</p>
-        <pre>Error Code: {error}</pre>
-
-        <Button onClick={() => {
-          dispatch(loadingActions.loadContent(path));
-        }}>Retry</Button>
-      </>
+      <ErrorDisplay errorCode={error} onClick={() => dispatch(loadingActions.loadContent(path))} />
     )
     case 'content':
       return <Content isRoot={isRoot} folderName={folderName} path={path} backPath={`/open/${splitPath.join('/')}`} />;

@@ -26,3 +26,4 @@ export const status = createSelector(featureState, saveFeatureState, (f, s) => {
 });
 
 export const error = createSelector(featureState, (f) => f.error);
+export const saveError = createSelector(saveFeatureState, (f) => f.error);

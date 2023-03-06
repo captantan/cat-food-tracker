@@ -154,33 +154,6 @@ export const AddEditMeal: React.FC = () => {
         </FormControl>
 
         <FormControl fullWidth
-            error={formik.touched.amount && Boolean(formik.errors.amount)}>
-          <InputLabel id={'label-' + amountFieldId}>Amount</InputLabel>
-          <Select
-            labelId={'label-' + amountFieldId}
-            aria-describedby={'helper-' + amountFieldId}
-            id="amount"
-            name="amount"
-            label="Amount"
-            value={formik.values.amount}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-          >
-            <MenuItem value={''} sx={{ color: 'lightgrey' }}>Unset</MenuItem>
-            <MenuItem value={EatenAmount.Unknown}>Unknown</MenuItem>
-            <MenuItem value={EatenAmount.None}>None</MenuItem>
-            <MenuItem value={EatenAmount.Little}>Little</MenuItem>
-            <MenuItem value={EatenAmount.Some}>Some</MenuItem>
-            <MenuItem value={EatenAmount.Half}>Half</MenuItem>
-            <MenuItem value={EatenAmount.Most}>Most</MenuItem>
-            <MenuItem value={EatenAmount.All}>All</MenuItem>
-          </Select>
-          <FormHelperText id={'helper-' + amountFieldId}>
-            {(formik.touched.amount && formik.errors.amount) || ' '}
-          </FormHelperText>
-        </FormControl>
-
-        <FormControl fullWidth
             error={formik.touched.brand && Boolean(formik.errors.brand)}>
           <InputLabel id={'label-' + brandFieldId}>Brand</InputLabel>
           <Select
@@ -221,6 +194,33 @@ export const AddEditMeal: React.FC = () => {
           </Select>
           <FormHelperText id={'helper-' + flavorFieldId}>
             {(formik.touched.flavor && formik.errors.flavor) || ' '}
+          </FormHelperText>
+        </FormControl>
+
+        <FormControl fullWidth
+            error={formik.touched.amount && Boolean(formik.errors.amount)}>
+          <InputLabel id={'label-' + amountFieldId}>Amount</InputLabel>
+          <Select
+            labelId={'label-' + amountFieldId}
+            aria-describedby={'helper-' + amountFieldId}
+            id="amount"
+            name="amount"
+            label="Amount"
+            value={formik.values.amount}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+          >
+            <MenuItem value={''} sx={{ color: 'lightgrey' }}>Unset</MenuItem>
+            <MenuItem value={EatenAmount.Unknown}>Unknown</MenuItem>
+            <MenuItem value={EatenAmount.None}>None</MenuItem>
+            <MenuItem value={EatenAmount.Little}>Little</MenuItem>
+            <MenuItem value={EatenAmount.Some}>Some</MenuItem>
+            <MenuItem value={EatenAmount.Half}>Half</MenuItem>
+            <MenuItem value={EatenAmount.Most}>Most</MenuItem>
+            <MenuItem value={EatenAmount.All}>All</MenuItem>
+          </Select>
+          <FormHelperText id={'helper-' + amountFieldId}>
+            {(formik.touched.amount && formik.errors.amount) || ' '}
           </FormHelperText>
         </FormControl>
 

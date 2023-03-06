@@ -1,8 +1,9 @@
-import { Button } from '@mui/material';
+import { Button, Icon, Typography } from '@mui/material';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Route, Routes, useParams } from 'react-router-dom';
+import { CenterBox } from '../components/CenterBox';
 import { ErrorDisplay } from '../components/ErrorDisplay';
 import { LoadingDisplay } from '../components/LoadingDisplay';
 import { store } from '../store/configure';
@@ -49,12 +50,13 @@ export const EditFeature: React.FC = () => {
     )
     case 'saved':
       return (
-        <>
-        <p>Successfully saved</p>
-        <Button onClick={() => dispatch(fileActions.returnToContent())}>
-          Return to content
-        </Button>
-        </>
+        <CenterBox>
+          <Icon color="primary" fontSize="inherit" sx={{mb:1, fontWeight: 100, fontSize: 150}}>check_circle</Icon>
+          <Typography variant="body1" sx={{mb: 2}}>Successfully saved</Typography>
+          <Button onClick={() => dispatch(fileActions.returnToContent())}>
+            Return to content
+          </Button>
+        </CenterBox>
       )
   }
 }

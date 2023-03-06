@@ -51,9 +51,9 @@ export const EditFeature: React.FC = () => {
     case 'saved':
       return (
         <CenterBox>
-          <Icon color="primary" fontSize="inherit" sx={{mb:1, fontWeight: 100, fontSize: 150}}>check_circle</Icon>
-          <Typography variant="body1" sx={{mb: 2}}>Successfully saved</Typography>
-          <Button onClick={() => dispatch(fileActions.returnToContent())}>
+          <Icon color="primary" fontSize="inherit" sx={{mb:0, fontWeight: 100, fontSize: 180}}>check_circle</Icon>
+          <Typography variant="body1" sx={{mb: 3}} color="primary">Successfully saved</Typography>
+          <Button color="primary" variant="outlined" onClick={() => dispatch(fileActions.returnToContent())}>
             Return to content
           </Button>
         </CenterBox>

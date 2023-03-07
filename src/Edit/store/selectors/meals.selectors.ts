@@ -81,4 +81,7 @@ export const initialFormValues = createSelector(currentData, prefilDate, prefilM
   };
 
   return initialValues;
-})
+});
+
+export const isConfirmDelete = createSelector(editState, (s) => s.confirmDelete);
+ 

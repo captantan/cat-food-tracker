@@ -1,4 +1,4 @@
-import { Button, DialogActions, DialogContent, DialogTitle, TextField, Select, MenuItem } from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogTitle, TextField, Select, MenuItem, IconButton, Icon, Typography } from '@mui/material';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -19,6 +19,7 @@ export const AddEditMeal: React.FC = () => {
 
   const editId = useSelector(mealSelectors.editId);
   const isEdit = !!editId;
+  const isConfirmDelete = useSelector(mealSelectors.isConfirmDelete);
 
   const currentData = useSelector(mealSelectors.currentData);
   const initialValues = useSelector(mealSelectors.initialFormValues);
@@ -103,6 +104,20 @@ export const AddEditMeal: React.FC = () => {
   const brandFieldId = React.useId();
   const flavorFieldId = React.useId();
 
+  if (isConfirmDelete) {
+    return (
+      <>
+      <DialogTitle>Are you sure?</DialogTitle>
+      <DialogContent>
+        <Typography variant="body1">This action cannot be undone.</Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => dispatch(mealActions.noDelete())}>No</Button>
+        <Button color="warning" onClick={() => dispatch(mealActions.yesDelete(editId!))}>Yes</Button>
+      </DialogActions>
+      </>
+    )
+  } else {
   return (
     <form onSubmit={formik.handleSubmit}>
       <DialogTitle>{editId ? 'Edit Meal' : 'New Meal'}</DialogTitle>
@@ -239,9 +254,13 @@ export const AddEditMeal: React.FC = () => {
         ></TextField>
       </DialogContent>
       <DialogActions>
+        {isEdit && (<IconButton color="warning" type="button" onClick={() => dispatch(mealActions.deleteMeal())}>
+          <Icon>delete</Icon>
+          </IconButton>)}
         <Button type="button" onClick={() => dispatch(mealActions.cancelEditMeal())}>Cancel</Button>
         <Button type="submit">Save</Button>
       </DialogActions>
     </form>
   );
+            }
 }

@@ -8,6 +8,8 @@ export interface MealEditState {
 
   prefillDate: string | null, // same date format as MealEntry
   prefillMeal: Meal | null,
+
+  confirmDelete: boolean;
 }
 
 export interface MealsState {

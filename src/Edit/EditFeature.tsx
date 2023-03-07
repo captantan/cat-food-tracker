@@ -11,6 +11,7 @@ import { BrandsPage } from './components/Brands/BrandsPage';
 import { DataPageFrame } from './components/DataPageFrame';
 import { LandingPage } from './components/LandingPage';
 import { MealsPage } from './components/Meals/MealsPage';
+import { NotFound } from './components/NotFound';
 import { fileActions } from './store/actions';
 import { fileLoadingSelectors } from './store/selectors';
 
@@ -39,6 +40,7 @@ export const EditFeature: React.FC = () => {
         <Route index element={<LandingPage />} />
         <Route path="brands" element={<BrandsPage />} />
         <Route path="meals" element={<MealsPage />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

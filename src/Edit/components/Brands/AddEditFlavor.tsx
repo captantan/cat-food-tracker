@@ -1,6 +1,6 @@
-import { Button, Chip, DialogActions, DialogContent, DialogTitle, Icon, IconButton, Box, TextField, Typography } from '@mui/material';
+import { Button, Autocomplete, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import { useFormik, FormikErrors } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { brandsSelectors } from '../../store/selectors';
 import { v4 as uuidV4 } from 'uuid';
@@ -8,7 +8,7 @@ import { brandsActions } from '../../store/actions';
 
 interface FormModel {
   name: string;
-  tag: string;
+  tags: string[];
 }
 
 function validateForm(values: FormModel): FormikErrors<FormModel> {
@@ -30,12 +30,10 @@ export const AddEditFlavor: React.FC = () => {
   const editName = useSelector(brandsSelectors.currentFlavorName);
   const editTags = useSelector(brandsSelectors.currentTagList);
 
-  const [tags, setTags] = useState(editTags);
-
   const formik = useFormik({
-    initialValues: { name: editName ?? '', tag: '' },
+    initialValues: { name: editName ?? '', tags: editTags ?? [] },
     validate: validateForm,
-    onSubmit({ name }, formikHelpers) {
+    onSubmit({ name, tags }, formikHelpers) {
       const id = editId ?? uuidV4();
 
       if (!brandId) {
@@ -67,41 +65,20 @@ export const AddEditFlavor: React.FC = () => {
           helperText={(formik.touched.name && formik.errors.name) || ' '}
         />
 
-        <Box sx={{pb: 3}}>
-          {tags.map((t, i) => (
-            <Chip
-              key={t}
-              label={t}
-              onDelete={() => {
-                const newTags = [...tags]
-                newTags.splice(i, 1);
-                setTags(newTags);
-              }}
-              sx={{
-                mb: 1, mr: 1
-              }}
-            />
-          ))}
-        </Box>
-
-        <TextField
-          variant='outlined'
+        <Autocomplete
           fullWidth
-          id="tag"
-          name="tag"
-          label="New Tag"
-          value={formik.values.tag}
-          onChange={formik.handleChange}
+          id="tags"
+          value={formik.values.tags as string[]}
+          onChange={(_event, value) => formik.setFieldValue('tags', value)}
           onBlur={formik.handleBlur}
+          clearOnBlur
+          multiple
+          freeSolo
+          options={[]}
+          renderInput={(params) => <TextField 
+            variant="outlined" 
+            name="tags" label="Tags" {...params} />}
         />
-        <IconButton type="button" onClick={() => {
-          if (formik.values.tag) {
-            setTags([...tags, formik.values.tag]);
-            formik.setFieldValue('tag', '');
-          }
-        }}>
-          <Icon>add</Icon>
-        </IconButton>
       </DialogContent>
       <DialogActions>
         <Button type="button" onClick={() => dispatch(brandsActions.cacncelEditFlavor())}>Cancel</Button>

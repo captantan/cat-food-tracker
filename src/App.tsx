@@ -2,6 +2,8 @@ import { InteractionType } from '@azure/msal-browser';
 import { MsalAuthenticationTemplate } from '@azure/msal-react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { loginRequest } from './auth/config';
+import { ErrorDisplay } from './components/ErrorDisplay';
+import { LoadingDisplay } from './components/LoadingDisplay';
 import { EditFeature } from './Edit/EditFeature';
 import { OpenFeature } from './Open/OpenFeature';
 
@@ -10,11 +12,15 @@ function App() {
     <MsalAuthenticationTemplate
     interactionType={InteractionType.Redirect} 
     authenticationRequest={loginRequest} 
-    errorComponent={(e) => {
-      console.error(e.error);
-      return (<p>An error occured</p>)
+    errorComponent={(props) => {
+      console.error(props.error);
+      return (<ErrorDisplay
+        title="Login Failed"
+        onClick={() => props.login(InteractionType.Redirect)}
+        body="An error occurred trying to log you in.  Please try again."
+      />)
     }} 
-    loadingComponent={() => <p>Loading...</p>}>
+    loadingComponent={() => <LoadingDisplay text="Requesting login..." />}>
       <Routes>
         <Route index element={<Navigate to="/open" />}/>
         <Route path="open/*" element={<OpenFeature/>} />

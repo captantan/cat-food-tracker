@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardHeader, Divider, Icon, IconButton, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Icon, IconButton, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { eatenAmountDisplays, Meal } from '../../models/meal';

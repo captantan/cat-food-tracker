@@ -29,6 +29,6 @@ export const OpenFeature: React.FC = () => {
       <ErrorDisplay errorCode={error} onClick={() => dispatch(loadingActions.loadContent(path))} />
     )
     case 'content':
-      return <Content isRoot={isRoot} folderName={folderName} path={path} backPath={`/open/${splitPath.join('/')}`} />;
+      return <Content splitPath={splitPath} isRoot={isRoot} folderName={folderName} path={path} backPath={`/open/${splitPath.join('/')}`} />;
   }
 }

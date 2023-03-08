@@ -34,7 +34,7 @@ export const AppHeader: React.FC<AppHeaderProps> = (props) => {
       >
         <Icon>{drawerOpen ? 'menu_open' : 'menu'}</Icon>
       </IconButton>
-      <Typography variant="h6" noWrap component="div" flex="1 1 auto">
+      <Typography variant="h6" noWrap component="h2" flex="1 1 auto">
         {props.title}
       </Typography>
 

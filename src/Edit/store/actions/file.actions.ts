@@ -5,10 +5,12 @@ import { State } from "../../../store/state";
 import { editActionPrefix } from "../../feature.const";
 import { fromSaveFile, SaveFileV1, toSaveFile } from "../../models/file";
 import { BrandListState, MealListState } from "../state";
+import { FileInfoState } from "../state/file-info.state";
 
 const actionPrefix = editActionPrefix + '[File] ';
 
 export const loadFileStarted = createAction(actionPrefix + 'Load Started');
+export const loadFileInfoSucceeded = createAction<FileInfoState>(actionPrefix + 'Load File Info Succeeded');
 export const loadFileSucceeded = createAction<{ brands: BrandListState, meals: MealListState }>(actionPrefix + 'Load Succeeded');
 export const loadFileFailed = createAction<number>(actionPrefix + 'Load Failed');
 
@@ -31,7 +33,42 @@ export function loadFile(id: string): ThunkAction<Promise<void>, State, unknown,
         }
       }
 
-      const fileResponse = await fetch('https://graph.microsoft.com/v1.0/drive/items/' + encodeURIComponent(id) + '/content', {
+      const fileInfoResponse = await fetch('https://graph.microsoft.com/v1.0/drive/items/' + encodeURIComponent(id), {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        headers: {
+          "Authorization": "Bearer " + authToken,
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      if (!fileInfoResponse.ok) {
+        dispatch(loadFileFailed(fileInfoResponse.status));
+        return;
+      }
+
+      const fileInfo = await fileInfoResponse.json();
+
+      dispatch(loadFileInfoSucceeded({
+        name: fileInfo.name,
+        path: fileInfo.parentReference.path,
+      }))
+
+      try {
+        const authRes = await msalInstance.acquireTokenSilent(loginRequest);
+        authToken = authRes.accessToken;
+      } catch (e) {
+        try {
+          const authRes = await msalInstance.acquireTokenPopup(loginRequest);
+          authToken = authRes.accessToken;
+        } catch (e2) {
+          dispatch(loadFileFailed(-2));
+          return;
+        }
+      }
+
+      const fileResponse = await fetch(fileInfo['@microsoft.graph.downloadUrl'], {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

@@ -126,6 +126,7 @@ export const AddEditMeal: React.FC = () => {
           disableFuture
           disabled={isEdit}
           label="Date"
+          inputFormat="PPPP"
           value={formik.values.date}
           onChange={(d) => formik.setFieldValue('date', d)}
           renderInput={(params) => (<TextField

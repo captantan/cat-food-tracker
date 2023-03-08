@@ -10,7 +10,15 @@ export interface ContentState {
   files: FileEntry[];
 }
 
+export interface CreateNewFileState {
+  showModal: boolean;
+  newPath: string | null;
+}
+
 export interface OpenState {
   loading: LoadingState;
   content: ContentState;
+
+  newFile: CreateNewFileState;
+  newFileLoading: LoadingState;
 }

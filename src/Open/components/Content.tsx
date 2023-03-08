@@ -1,7 +1,8 @@
-import { AppBar, Box, Breadcrumbs, Icon, IconButton, Link as MatLink, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Breadcrumbs, Button, Icon, IconButton, Link as MatLink, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Toolbar, Typography } from "@mui/material";
 import { take } from "ramda";
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom";
+import { newFileActions } from "../store/actions";
 import { contentSelectors } from "../store/selectors"
 
 export const Content: React.FC<{
@@ -12,7 +13,8 @@ export const Content: React.FC<{
   splitPath: string[],
 }> = ({ folderName, isRoot, path, backPath, splitPath }) => {
   const content = useSelector(contentSelectors.content);
-
+  const dispatch = useDispatch();
+  
   return (
     <>
       <AppBar color="primary" position="sticky">
@@ -32,6 +34,7 @@ export const Content: React.FC<{
               {splitPath.map((seg, index) => <MatLink key={index} component={Link} color="inherit" to={`/open/${take(index + 1, splitPath).join('/')}`}>{seg}</MatLink>)}
             </Breadcrumbs>
           </Box>
+          <Button sx={{ml: 2}} color="inherit" onClick={() => dispatch(newFileActions.openDialog())}>New File</Button>
         </Toolbar>
       </AppBar>
 
@@ -71,7 +74,6 @@ export const Content: React.FC<{
           <Typography variant="body1">Empty Folder</Typography>
         </Box>}
       </Box>
-
     </>
   )
 }

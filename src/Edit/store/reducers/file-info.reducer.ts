@@ -1,5 +1,4 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { LoadingState } from "../../../loading.state";
 import { fileActions } from "../actions";
 import { FileInfoState } from "../state/file-info.state";
 

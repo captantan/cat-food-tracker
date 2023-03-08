@@ -1,4 +1,4 @@
-import { AppBar, Box, Breadcrumbs, Button, Icon, IconButton, Link as MatLink, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Breadcrumbs, Button, Icon, IconButton, Link as MatLink, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material";
 import { take } from "ramda";
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom";

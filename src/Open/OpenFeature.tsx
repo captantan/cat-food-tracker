@@ -48,7 +48,7 @@ export const OpenFeature: React.FC = () => {
     
     case 'creating': return (<LoadingDisplay text="Creating that file..." />);
     case 'creation error': return (
-      <ErrorDisplay errorCode={newFileError} title="Failed to create file" onClick={() => dispatch(newFileActions.createFile(path, navigator))} />
+      <ErrorDisplay errorCode={newFileError} title="Failed to create file" onClick={() => dispatch(newFileActions.createFile(newFilePath!, navigator))} />
     )
 
     case 'done': return (

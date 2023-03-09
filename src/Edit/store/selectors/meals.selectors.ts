@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 import { State } from "../../../store/state";
 import { sort, ascend, groupBy, descend } from 'ramda';
 import { brandDictionary } from "./brands.selectors";
-import { Meal, MealEntry, MealFormModel } from "../../models/meal";
+import { Meal, MealDayViewModel, MealEntry, MealFormModel } from "../../models/meal";
 import { format, parseISO } from 'date-fns';
 
 const mealsFeatureSelector = (state: State) => state.edit.meals;
@@ -20,7 +20,7 @@ export const mealListVM = createSelector(mealDictionary, brandDictionary, (mD, b
     const parsed = parseISO(date);
     const formatted = format(parsed, 'PPPP');
 
-    return {
+    const result: MealDayViewModel = {
       date,
       parsed, formatted,
       meals: Object.values(Meal).reduce((dict, mealType) =>{
@@ -43,7 +43,9 @@ export const mealListVM = createSelector(mealDictionary, brandDictionary, (mD, b
         
         return dict;
       }, {} as Record<Meal, Array<MealEntry & {brandName: string, flavorName: string}>>),
-    }
+    };
+
+    return result;
   })
 
 });

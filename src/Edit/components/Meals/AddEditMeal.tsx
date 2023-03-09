@@ -9,10 +9,9 @@ import { useFormik, FormikErrors } from 'formik';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidV4 } from 'uuid';
-import { EatenAmount, MealEntry, MealFormModel } from '../../models/meal';
+import { EatenAmount, MealEntry, MealFormModel, mealListTypeDate } from '../../models/meal';
 import { mealActions } from '../../store/actions';
 import { brandsSelectors, mealSelectors } from '../../store/selectors';
-import { mealListTypeDate } from './MealList';
 
 export const AddEditMeal: React.FC = () => {
   const dispatch = useDispatch();

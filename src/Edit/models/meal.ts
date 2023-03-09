@@ -48,3 +48,20 @@ export interface MealFormModel {
 
   notes: string;
 }
+
+export interface MealDayViewModel {
+  date: string;
+  parsed: Date;
+  formatted: string;
+  meals: Record<Meal, (MealEntry & {
+      brandName: string;
+      flavorName: string;
+  })[]>;
+}
+
+export const mealListTypeDate = [
+  { meal: Meal.Breakfast, title: 'Breakfast', color: 'purple' },
+  { meal: Meal.Lunch, title: 'Lunch', color: 'blue' },
+  { meal: Meal.Dinner, title: 'Dinner', color: 'green' },
+  { meal: Meal.Snack, title: 'Snack', color: 'orange' },
+];

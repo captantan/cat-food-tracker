@@ -1,6 +1,6 @@
 import { Drawer, Box } from '@mui/material';
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { DrawerContent } from './DrawerContent';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiSelectors } from '../store/selectors';
@@ -12,6 +12,15 @@ export const DataPageFrame: React.FC = () => {
   const dispatch = useDispatch();
   
   const drawerOpen = useSelector(uiSelectors.drawerOpen);
+  const location = useLocation();
+  const [lastLocation, setLocation] = React.useState(location);
+
+  if (lastLocation !== location) {
+    setTimeout(() => {
+      dispatch(uiActions.closeDrawer());
+    });
+    setLocation(location);
+  }
 
   return (
     <>

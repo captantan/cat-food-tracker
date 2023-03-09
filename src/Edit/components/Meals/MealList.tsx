@@ -45,16 +45,17 @@ export const MealList: React.FC = () => {
                   <Box key={m.id} sx={{
                     display: 'grid',
                     gridTemplateColumns: '1fr auto auto',
-                    gridTemplateRows: 'auto auto',
-                    gap: 1,
-                    mb: i !== date.meals[mealType.meal].length - 1 ? 1 : 0
+                    gridTemplateRows: m.notes ? 'auto auto' : 'auto',
+                    columnGap: 1,
+                    rowGap: .5,
+                    mb: i !== date.meals[mealType.meal].length - 1 ? 2 : 0
                   }}>
                     <Box>
                       <Typography variant="body1" gutterBottom={false}>{m.flavorName}</Typography>
-                      <Typography variant="caption">{m.brandName}</Typography>
+                      <Typography variant="caption" component="p" gutterBottom={false} sx={{lineHeight: 1.1}}>{m.brandName}</Typography>
                     </Box>
                     <Typography variant="body1" textAlign="right" sx={{alignSelf: 'center'}}>{m.amount && eatenAmountDisplays[m.amount]}</Typography>
-                    <Typography variant="caption" sx={{gridColumnStart: 1, gridColumnEnd: 3, gridRow: 2}}>{m.notes}</Typography>
+                    {m.notes && <Typography variant="caption" component="p" sx={{gridColumnStart: 1, gridColumnEnd: 4, gridRow: 2}}>{m.notes}</Typography> }
                     <Box sx={{gridColumn: 3, gridRow: 1, alignSelf: 'center'}}>
                       <IconButton onClick={() => dispatch(mealActions.editMeal(m.id))} aria-label="Edit Meal" color="primary">
                         <Icon>edit</Icon>

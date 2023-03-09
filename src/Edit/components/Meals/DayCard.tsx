@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, CardHeader, Icon, IconButton, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { eatenAmountDisplays, Meal, MealDayViewModel, mealListTypeDate } from '../../models/meal';
+import { eatenAmountDisplays, MealDayViewModel, mealListTypeDate } from '../../models/meal';
 import { mealActions } from '../../store/actions';
 
 export const DayCard: React.FC<{ date: MealDayViewModel }> = ({ date }) => {

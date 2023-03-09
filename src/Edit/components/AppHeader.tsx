@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, IconButton, Icon } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Icon, Badge } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiSelectors } from '../store/selectors';
@@ -14,7 +14,10 @@ interface AppHeaderProps {
 export const AppHeader: React.FC<AppHeaderProps> = (props) => {
   const dispatch = useDispatch() as typeof store.dispatch;
   const drawerOpen = useSelector(uiSelectors.drawerOpen);
+  const hasUnsaved = useSelector(uiSelectors.hasUnsavedChanges);
   const fileId = useParams().fileId!;
+
+  const saveIcon = (<Icon>save</Icon>);
 
   return (
     <AppBar
@@ -40,7 +43,9 @@ export const AppHeader: React.FC<AppHeaderProps> = (props) => {
 
       <IconButton 
         color="inherit" aria-label="Save" onClick={() => dispatch(saveFile(fileId))}>
-        <Icon>save</Icon>
+          {hasUnsaved ? <Badge variant="dot" color="secondary" overlap="circular">
+            {saveIcon}
+          </Badge> : saveIcon }
       </IconButton>
     </Toolbar>
   </AppBar>

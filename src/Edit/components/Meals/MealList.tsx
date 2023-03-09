@@ -28,6 +28,8 @@ export const MealList: React.FC = () => {
                 <Box sx={{
                   display: 'flex',
                   flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
                   borderBottomWidth: '1px',
                   borderBottomStyle: 'solid',
                   borderBottomColor: mealType.color,
@@ -46,16 +48,15 @@ export const MealList: React.FC = () => {
                     display: 'grid',
                     gridTemplateColumns: '1fr auto auto',
                     gridTemplateRows: m.notes ? 'auto auto' : 'auto',
-                    columnGap: 1,
-                    rowGap: .5,
+                    gap: 1,
                     mb: i !== date.meals[mealType.meal].length - 1 ? 2 : 0
                   }}>
                     <Box>
                       <Typography variant="body1" gutterBottom={false}>{m.flavorName}</Typography>
-                      <Typography variant="caption" component="p" gutterBottom={false} sx={{lineHeight: 1.1}}>{m.brandName}</Typography>
+                      <Typography variant="caption" component="p" gutterBottom={false}>{m.brandName}</Typography>
                     </Box>
                     <Typography variant="body1" textAlign="right" sx={{alignSelf: 'center'}}>{m.amount && eatenAmountDisplays[m.amount]}</Typography>
-                    {m.notes && <Typography variant="caption" component="p" sx={{gridColumnStart: 1, gridColumnEnd: 4, gridRow: 2}}>{m.notes}</Typography> }
+                    {m.notes && <Typography variant="caption" component="p" gutterBottom sx={{gridColumnStart: 1, gridColumnEnd: 4, gridRow: 2}}>{m.notes}</Typography> }
                     <Box sx={{gridColumn: 3, gridRow: 1, alignSelf: 'center'}}>
                       <IconButton onClick={() => dispatch(mealActions.editMeal(m.id))} aria-label="Edit Meal" color="primary">
                         <Icon>edit</Icon>

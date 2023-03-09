@@ -10,6 +10,7 @@ export const uiReducer = createReducer<UIState>({drawerOpen: false,unsavedChange
         action.type === fileActions.saveFileSucceeded.type,
       (state, _action) => ({
       ...state,
+      drawerOpen: false,
       unsavedChanges: false
     })).addMatcher(
       (action) => [

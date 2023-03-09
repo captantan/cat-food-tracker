@@ -20,7 +20,20 @@ export const BrandsPage: React.FC = () => {
     <Box component="main" sx={{padding: 3, pb: 1, flex: '1 0 auto'}}>
       <BrandList></BrandList>
     </Box>
-    <Box sx={{maxWidth: 960, width: '100%', m: '0 auto', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', position: 'sticky', bottom: '16px', mb: 2, mt: 1}}>
+    <Box sx={(theme) => ({
+      maxWidth: 960,
+      width: '100%',
+      m: '0 auto',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      position: 'sticky',
+      bottom: theme.spacing(2),
+      mb: 2,
+      mt: 1,
+      pr: 2,
+      boxSizing: 'border-box',
+    })}>
       <Fab color="secondary" onClick={() => dispatch(brandsActions.newBrand())}>
           <Icon>add</Icon>
       </Fab>

@@ -20,7 +20,8 @@ export const Content: React.FC<{
       <AppBar color="primary" position="sticky">
         <Toolbar>
           {!isRoot && <IconButton component={Link} to={backPath}
-            color="inherit" sx={{ mr: 2 }}>
+            aria-label="Back"
+            color="inherit" sx={{ ml: -1.5, mr: 2 }}>
             <Icon>arrow_back</Icon>
           </IconButton>}
 

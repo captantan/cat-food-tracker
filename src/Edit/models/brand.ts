@@ -15,6 +15,6 @@ export interface Brand extends BrandBase {
   flavors: FlavorDictionary;
 }
 
-export interface FileBrand extends BrandBase{
+export interface FileBrand extends BrandBase {
   flavors: Flavor[];
 }

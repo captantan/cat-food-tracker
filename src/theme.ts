@@ -17,10 +17,10 @@ const theme = createTheme({
   components: {
     MuiIcon: {
       defaultProps: {
-        baseClassName: 'material-symbols-rounded'
-      }
-    }
-  }
+        baseClassName: 'material-symbols-rounded',
+      },
+    },
+  },
 });
 
 export default theme;

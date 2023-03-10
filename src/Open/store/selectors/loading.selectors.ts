@@ -1,5 +1,5 @@
-import { createSelector } from "reselect";
-import { State } from "../../../store/state";
+import { createSelector } from 'reselect';
+import { State } from '../../../store/state';
 
 const featureState = (state: State) => state.open.loading;
 const nfFeatureState = (state: State) => state.open.newFileLoading;
@@ -14,7 +14,7 @@ export const status = createSelector(featureState, nfFeatureState, (f, nf) => {
     case 'done':
       switch (nf.status) {
         case 'none':
-          return 'content'
+          return 'content';
         case 'loading':
           return 'creating';
         case 'error':

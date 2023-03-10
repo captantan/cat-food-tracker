@@ -1,4 +1,12 @@
-import { Button, Autocomplete, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Autocomplete,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useFormik, FormikErrors } from 'formik';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +23,7 @@ function validateForm(values: FormModel): FormikErrors<FormModel> {
   const errors: FormikErrors<FormModel> = {};
 
   if (!values.name) {
-    errors.name = "Name is required";
+    errors.name = 'Name is required';
   }
 
   return errors;
@@ -24,7 +32,7 @@ function validateForm(values: FormModel): FormikErrors<FormModel> {
 export const AddEditFlavor: React.FC = () => {
   const dispatch = useDispatch();
 
-  const brandId = useSelector(brandsSelectors.editBrandId)
+  const brandId = useSelector(brandsSelectors.editBrandId);
   const editId = useSelector(brandsSelectors.editFlavorId);
 
   const editName = useSelector(brandsSelectors.currentFlavorName);
@@ -33,27 +41,38 @@ export const AddEditFlavor: React.FC = () => {
   const formik = useFormik({
     initialValues: { name: editName ?? '', tags: editTags ?? [] },
     validate: validateForm,
-    onSubmit({ name, tags }, formikHelpers) {
+    onSubmit({ name, tags }, _formikHelpers) {
       const id = editId ?? uuidV4();
 
       if (!brandId) {
         throw new Error('Brand id must not be null');
       }
 
+      // this modal can only be opened if brandId is set
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       dispatch(brandsActions.saveFlavor({ id, brand: brandId!, name, tags }));
     },
-  })
+  });
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <DialogTitle>{editId ? 'Edit Brand' : 'New Brand'}</DialogTitle>
-      <DialogContent sx={{pt: '8px !important', maxWidth: 320}}>
-        {editId && <div>
-          <Typography variant="overline" gutterBottom={false} sx={{ lineHeight: 1.5 }}>Current Name</Typography>
-          <Typography variant="body1" gutterBottom sx={{ mb: 3 }}>{editName}</Typography>
-        </div>}
+      <DialogContent sx={{ pt: '8px !important', maxWidth: 320 }}>
+        {editId && (
+          <div>
+            <Typography
+              variant="overline"
+              gutterBottom={false}
+              sx={{ lineHeight: 1.5 }}>
+              Current Name
+            </Typography>
+            <Typography variant="body1" gutterBottom sx={{ mb: 3 }}>
+              {editName}
+            </Typography>
+          </div>
+        )}
         <TextField
-          variant='outlined'
+          variant="outlined"
           fullWidth
           id="name"
           name="name"
@@ -75,15 +94,24 @@ export const AddEditFlavor: React.FC = () => {
           multiple
           freeSolo
           options={[]}
-          renderInput={(params) => <TextField 
-            variant="outlined" 
-            name="tags" label="Tags" {...params} />}
+          renderInput={(params) => (
+            <TextField
+              variant="outlined"
+              name="tags"
+              label="Tags"
+              {...params}
+            />
+          )}
         />
       </DialogContent>
       <DialogActions>
-        <Button type="button" onClick={() => dispatch(brandsActions.cacncelEditFlavor())}>Cancel</Button>
+        <Button
+          type="button"
+          onClick={() => dispatch(brandsActions.cacncelEditFlavor())}>
+          Cancel
+        </Button>
         <Button type="submit">Save</Button>
       </DialogActions>
     </form>
   );
-}
+};

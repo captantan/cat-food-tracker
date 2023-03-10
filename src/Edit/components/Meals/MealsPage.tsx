@@ -10,7 +10,7 @@ import { AddEditMeal } from './AddEditMeal';
 
 export const MealsPage: React.FC = () => {
   const dispatch = useDispatch();
-  
+
   const editModalOpen = useSelector(mealSelectors.isEditOpen);
   const hasAnyFlavors = useSelector(brandsSelectors.hasAnyFlavors);
 
@@ -19,35 +19,48 @@ export const MealsPage: React.FC = () => {
       <AppHeader title="Meals"></AppHeader>
 
       <Box component="main" sx={{ padding: 3, pb: 1, flex: '1 0 auto' }}>
-        {hasAnyFlavors ? <MealList></MealList> : (
+        {hasAnyFlavors ? (
+          <MealList></MealList>
+        ) : (
           <>
-            <Typography variant="body1">You must have foods loaded to enter meals</Typography>
-            <Button component={Link} to='../brands'>Enter foods</Button>
+            <Typography variant="body1">
+              You must have foods loaded to enter meals
+            </Typography>
+            <Button component={Link} to="../brands">
+              Enter foods
+            </Button>
           </>
         )}
       </Box>
-      <Box sx={(theme) => ({
-        maxWidth: 960,
-        width: '100%',
-        m: '0 auto',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        position: 'sticky',
-        bottom: theme.spacing(2),
-        mb: 2,
-        mt: 1,
-        pr: 2,
-        boxSizing: 'border-box',
-      })}>
-        <Fab color="secondary" onClick={() => dispatch(mealActions.newMeal({date: null, meal: null}))}>
-            <Icon>add</Icon>
+      <Box
+        sx={(theme) => ({
+          maxWidth: 960,
+          width: '100%',
+          m: '0 auto',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          position: 'sticky',
+          bottom: theme.spacing(2),
+          mb: 2,
+          mt: 1,
+          pr: 2,
+          boxSizing: 'border-box',
+        })}>
+        <Fab
+          color="secondary"
+          onClick={() =>
+            dispatch(mealActions.newMeal({ date: null, meal: null }))
+          }>
+          <Icon>add</Icon>
         </Fab>
       </Box>
 
-      <Dialog open={editModalOpen} onClose={() => dispatch(mealActions.cancelEditMeal())}>
+      <Dialog
+        open={editModalOpen}
+        onClose={() => dispatch(mealActions.cancelEditMeal())}>
         <AddEditMeal></AddEditMeal>
       </Dialog>
     </>
   );
-}
+};

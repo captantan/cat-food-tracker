@@ -6,24 +6,27 @@ import { ErrorDisplay } from './components/ErrorDisplay';
 import { LoadingDisplay } from './components/LoadingDisplay';
 import { EditFeature } from './Edit/EditFeature';
 import { OpenFeature } from './Open/OpenFeature';
+import React from 'react';
 
 function App() {
   return (
     <MsalAuthenticationTemplate
-    interactionType={InteractionType.Redirect} 
-    authenticationRequest={loginRequest} 
-    errorComponent={(props) => {
-      console.error(props.error);
-      return (<ErrorDisplay
-        title="Login Failed"
-        onClick={() => props.login(InteractionType.Redirect)}
-        body="An error occurred trying to log you in.  Please try again."
-      />)
-    }} 
-    loadingComponent={() => <LoadingDisplay text="Requesting login..." />}>
+      interactionType={InteractionType.Redirect}
+      authenticationRequest={loginRequest}
+      errorComponent={(eProps) => {
+        console.error(eProps.error);
+        return (
+          <ErrorDisplay
+            title="Login Failed"
+            onClick={() => eProps.login(InteractionType.Redirect)}
+            body="An error occurred trying to log you in.  Please try again."
+          />
+        );
+      }}
+      loadingComponent={() => <LoadingDisplay text="Requesting login..." />}>
       <Routes>
-        <Route index element={<Navigate to="/open" />}/>
-        <Route path="open/*" element={<OpenFeature/>} />
+        <Route index element={<Navigate to="/open" />} />
+        <Route path="open/*" element={<OpenFeature />} />
         <Route path="edit/:fileId/*" element={<EditFeature />} />
       </Routes>
     </MsalAuthenticationTemplate>

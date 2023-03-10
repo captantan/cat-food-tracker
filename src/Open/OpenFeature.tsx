@@ -1,15 +1,15 @@
-import { Dialog, Typography } from "@mui/material";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
-import { CenterBox } from "../components/CenterBox";
-import { ErrorDisplay } from "../components/ErrorDisplay";
-import { LoadingDisplay } from "../components/LoadingDisplay";
-import { store } from "../store/configure";
-import { Content } from "./components/Content";
-import { NewFileForm } from "./components/NewFileForm";
-import { loadingActions, newFileActions } from "./store/actions";
-import { loadingSelectors, newFileSelectors } from "./store/selectors";
+import { Dialog, Typography } from '@mui/material';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router';
+import { CenterBox } from '../components/CenterBox';
+import { ErrorDisplay } from '../components/ErrorDisplay';
+import { LoadingDisplay } from '../components/LoadingDisplay';
+import { store } from '../store/configure';
+import { Content } from './components/Content';
+import { NewFileForm } from './components/NewFileForm';
+import { loadingActions, newFileActions } from './store/actions';
+import { loadingSelectors, newFileSelectors } from './store/selectors';
 
 export const OpenFeature: React.FC = () => {
   const dispatch = useDispatch<typeof store.dispatch>();
@@ -21,8 +21,10 @@ export const OpenFeature: React.FC = () => {
   const navigator = useNavigate();
 
   const params = useParams();
+  // must be non-null to render this component?
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const path = params['*']!;
-  const isRoot = !(path.trim());
+  const isRoot = !path.trim();
   const splitPath = path.split('/');
   const folderName = splitPath.pop() ?? null;
 
@@ -30,33 +32,60 @@ export const OpenFeature: React.FC = () => {
     dispatch(loadingActions.loadContent(path));
   }, [path, dispatch]);
 
-  switch(status) {
-    case 'loading': return (<LoadingDisplay text="Getting folder content..." />);
-    case 'error': return (
-      <ErrorDisplay errorCode={error} onClick={() => dispatch(loadingActions.loadContent(path))} />
-    )
+  switch (status) {
+    case 'loading':
+      return <LoadingDisplay text="Getting folder content..." />;
+    case 'error':
+      return (
+        <ErrorDisplay
+          errorCode={error}
+          onClick={() => dispatch(loadingActions.loadContent(path))}
+        />
+      );
     case 'content':
       return (
         <>
-      <Content splitPath={splitPath} isRoot={isRoot} folderName={folderName} path={path} backPath={`/open/${splitPath.join('/')}`} />
+          <Content
+            splitPath={splitPath}
+            isRoot={isRoot}
+            folderName={folderName}
+            path={path}
+            backPath={`/open/${splitPath.join('/')}`}
+          />
 
-        <Dialog open={showNewModal} onClose={() => dispatch(newFileActions.closeDialog())}>
-          <NewFileForm path={path} navigator={navigator} />
-        </Dialog>
+          <Dialog
+            open={showNewModal}
+            onClose={() => dispatch(newFileActions.closeDialog())}>
+            <NewFileForm path={path} navigator={navigator} />
+          </Dialog>
         </>
       );
-    
-    case 'creating': return (<LoadingDisplay text="Creating that file..." />);
-    case 'creation error': return (
-      <ErrorDisplay errorCode={newFileError} title="Failed to create file" onClick={() => dispatch(newFileActions.createFile(newFilePath!, navigator))} />
-    )
 
-    case 'done': return (
-      <CenterBox>
-        <Typography variant="h6" color="primary" gutterBottom={false}>Redirecting to your new file</Typography>
-        <Typography variant="body1">You should have your new file open shortly.</Typography>
-      </CenterBox>
-    )
+    case 'creating':
+      return <LoadingDisplay text="Creating that file..." />;
+    case 'creation error':
+      return (
+        <ErrorDisplay
+          errorCode={newFileError}
+          title="Failed to create file"
+          onClick={() => {
+            // this must be assigned to get to this step
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            dispatch(newFileActions.createFile(newFilePath!, navigator));
+          }}
+        />
+      );
 
+    case 'done':
+      return (
+        <CenterBox>
+          <Typography variant="h6" color="primary" gutterBottom={false}>
+            Redirecting to your new file
+          </Typography>
+          <Typography variant="body1">
+            You should have your new file open shortly.
+          </Typography>
+        </CenterBox>
+      );
   }
-}
+};

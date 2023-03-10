@@ -1,4 +1,4 @@
-import { LoadingState } from "../../../loading.state";
+import { LoadingState } from '../../../loading.state';
 
 export interface FileEntry {
   id: string;

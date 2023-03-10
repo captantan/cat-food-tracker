@@ -1,4 +1,4 @@
-import {combineReducers} from '@reduxjs/toolkit';
+import { combineReducers } from '@reduxjs/toolkit';
 import { EditState } from '../state';
 import { brandsReducer } from './brands';
 import { fileInfoReducer } from './file-info.reducer';
@@ -13,5 +13,5 @@ export const editFeatureReducer = combineReducers<EditState>({
   fileLoading: fileLoadingReducer,
   meals: mealsReducer,
   save: saveReducer,
-  ui: uiReducer
-})
+  ui: uiReducer,
+});

@@ -10,7 +10,7 @@ const drawerWidth = 240;
 
 export const DataPageFrame: React.FC = () => {
   const dispatch = useDispatch();
-  
+
   const drawerOpen = useSelector(uiSelectors.drawerOpen);
   const location = useLocation();
   const [lastLocation, setLocation] = React.useState(location);
@@ -26,8 +26,7 @@ export const DataPageFrame: React.FC = () => {
     <>
       <Box
         component="nav"
-        sx={{ width: { md: drawerWidth }, flax: { md: '0 0 auto' } }}
-      >
+        sx={{ width: { md: drawerWidth }, flax: { md: '0 0 auto' } }}>
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           variant="temporary"
@@ -38,19 +37,23 @@ export const DataPageFrame: React.FC = () => {
           }}
           sx={{
             display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
+          }}>
           <DrawerContent />
         </Drawer>
         <Drawer
           variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
           }}
-          open
-        >
+          open>
           <DrawerContent />
         </Drawer>
       </Box>
@@ -61,12 +64,12 @@ export const DataPageFrame: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           width: {
-            md: `calc(100% - ${drawerWidth}px)`
+            md: `calc(100% - ${drawerWidth}px)`,
           },
           ml: { md: `${drawerWidth}px` },
-        }}
-      >
+        }}>
         <Outlet />
       </Box>
-    </>);
-}
+    </>
+  );
+};

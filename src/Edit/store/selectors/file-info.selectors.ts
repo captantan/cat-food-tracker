@@ -1,5 +1,5 @@
-import { createSelector } from "reselect";
-import { State } from "../../../store/state";
+import { createSelector } from 'reselect';
+import { State } from '../../../store/state';
 
 const featureState = (state: State) => state.edit.fileInfo;
 

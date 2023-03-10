@@ -12,7 +12,7 @@ export enum EatenAmount {
   Some = 'some',
   Half = 'half',
   Most = 'most',
-  All = 'all'
+  All = 'all',
 }
 
 export const eatenAmountDisplays: Record<EatenAmount, string> = {
@@ -23,16 +23,16 @@ export const eatenAmountDisplays: Record<EatenAmount, string> = {
   [EatenAmount.Half]: 'Half',
   [EatenAmount.Most]: 'Most',
   [EatenAmount.All]: 'All',
-}
+};
 
 export interface MealEntry {
-  id: string; /* guid */
-  date: string; /* formatISO(date, {representation: 'date'}) / parseISO */
+  id: string /* guid */;
+  date: string /* formatISO(date, {representation: 'date'}) / parseISO */;
   meal: Meal;
   order: number; // used to sort if multiple entries for the same meal/day
 
-  brand: string; /* guid - brand -> id */
-  flavor: string; /* guid -> brand -> flavor -> id */
+  brand: string /* guid - brand -> id */;
+  flavor: string /* guid -> brand -> flavor -> id */;
 
   amount: EatenAmount | null;
   notes: string;
@@ -53,10 +53,13 @@ export interface MealDayViewModel {
   date: string;
   parsed: Date;
   formatted: string;
-  meals: Record<Meal, (MealEntry & {
+  meals: Record<
+    Meal,
+    (MealEntry & {
       brandName: string;
       flavorName: string;
-  })[]>;
+    })[]
+  >;
 }
 
 export const mealListTypeDate = [

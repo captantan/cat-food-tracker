@@ -1,5 +1,5 @@
-import { createAction } from "@reduxjs/toolkit";
-import { editActionPrefix } from "../../feature.const";
+import { createAction } from '@reduxjs/toolkit';
+import { editActionPrefix } from '../../feature.const';
 
 const actionPrefix = editActionPrefix + '[UI] ';
 

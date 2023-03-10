@@ -1,20 +1,29 @@
-import { Action, createAction, ThunkAction } from "@reduxjs/toolkit";
-import { msalInstance } from "../../../auth/client";
-import { loginRequest } from "../../../auth/config";
-import { State } from "../../../store/state";
-import { editActionPrefix } from "../../feature.const";
-import { fromSaveFile, SaveFileV1, toSaveFile } from "../../models/file";
-import { BrandListState, MealListState } from "../state";
-import { FileInfoState } from "../state/file-info.state";
+import { Action, createAction, ThunkAction } from '@reduxjs/toolkit';
+import { msalInstance } from '../../../auth/client';
+import { loginRequest } from '../../../auth/config';
+import { State } from '../../../store/state';
+import { editActionPrefix } from '../../feature.const';
+import { fromSaveFile, SaveFileV1, toSaveFile } from '../../models/file';
+import { BrandListState, MealListState } from '../state';
+import { FileInfoState } from '../state/file-info.state';
 
 const actionPrefix = editActionPrefix + '[File] ';
 
 export const loadFileStarted = createAction(actionPrefix + 'Load Started');
-export const loadFileInfoSucceeded = createAction<FileInfoState>(actionPrefix + 'Load File Info Succeeded');
-export const loadFileSucceeded = createAction<{ brands: BrandListState, meals: MealListState }>(actionPrefix + 'Load Succeeded');
-export const loadFileFailed = createAction<number>(actionPrefix + 'Load Failed');
+export const loadFileInfoSucceeded = createAction<FileInfoState>(
+  actionPrefix + 'Load File Info Succeeded',
+);
+export const loadFileSucceeded = createAction<{
+  brands: BrandListState;
+  meals: MealListState;
+}>(actionPrefix + 'Load Succeeded');
+export const loadFileFailed = createAction<number>(
+  actionPrefix + 'Load Failed',
+);
 
-export function loadFile(id: string): ThunkAction<Promise<void>, State, unknown, Action> {
+export function loadFile(
+  id: string,
+): ThunkAction<Promise<void>, State, unknown, Action> {
   return async function loadFileThunk(dispatch, _getState): Promise<void> {
     try {
       dispatch(loadFileStarted());
@@ -33,15 +42,19 @@ export function loadFile(id: string): ThunkAction<Promise<void>, State, unknown,
         }
       }
 
-      const fileInfoResponse = await fetch('https://graph.microsoft.com/v1.0/drive/items/' + encodeURIComponent(id), {
-        method: "GET", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        headers: {
-          "Authorization": "Bearer " + authToken,
-          // 'Content-Type': 'application/x-www-form-urlencoded',
+      const fileInfoResponse = await fetch(
+        'https://graph.microsoft.com/v1.0/drive/items/' +
+          encodeURIComponent(id),
+        {
+          method: 'GET', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          headers: {
+            Authorization: 'Bearer ' + authToken,
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
         },
-      });
+      );
 
       if (!fileInfoResponse.ok) {
         dispatch(loadFileFailed(fileInfoResponse.status));
@@ -50,10 +63,12 @@ export function loadFile(id: string): ThunkAction<Promise<void>, State, unknown,
 
       const fileInfo = await fileInfoResponse.json();
 
-      dispatch(loadFileInfoSucceeded({
-        name: fileInfo.name,
-        path: fileInfo.parentReference.path,
-      }))
+      dispatch(
+        loadFileInfoSucceeded({
+          name: fileInfo.name,
+          path: fileInfo.parentReference.path,
+        }),
+      );
 
       try {
         const authRes = await msalInstance.acquireTokenSilent(loginRequest);
@@ -68,15 +83,18 @@ export function loadFile(id: string): ThunkAction<Promise<void>, State, unknown,
         }
       }
 
-      const fileResponse = await fetch(fileInfo['@microsoft.graph.downloadUrl'], {
-        method: "GET", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        headers: {
-          "Authorization": "Bearer " + authToken,
-          // 'Content-Type': 'application/x-www-form-urlencoded',
+      const fileResponse = await fetch(
+        fileInfo['@microsoft.graph.downloadUrl'],
+        {
+          method: 'GET', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          headers: {
+            Authorization: 'Bearer ' + authToken,
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
         },
-      });
+      );
 
       if (!fileResponse.ok) {
         dispatch(loadFileFailed(fileResponse.status));
@@ -91,22 +109,28 @@ export function loadFile(id: string): ThunkAction<Promise<void>, State, unknown,
       }
 
       dispatch(loadFileSucceeded(fromSaveFile(resp)));
-
     } catch (e) {
       dispatch(loadFileFailed(-1));
     }
-  }
+  };
 }
 
 export const saveFileStarted = createAction(actionPrefix + 'Save Started');
 export const saveFileSucceeded = createAction(actionPrefix + 'Save Succeeded');
-export const saveFileFailed = createAction<number>(actionPrefix + 'Save Failed');
+export const saveFileFailed = createAction<number>(
+  actionPrefix + 'Save Failed',
+);
 
-export function saveFile(id: string): ThunkAction<Promise<void>, State, unknown, Action> {
+export function saveFile(
+  id: string,
+): ThunkAction<Promise<void>, State, unknown, Action> {
   return async function saveFileThunk(dispatch, getState): Promise<void> {
     try {
       const state = getState();
-      const saveFile = toSaveFile(state.edit.brands.data, state.edit.meals.data);
+      const saveFile = toSaveFile(
+        state.edit.brands.data,
+        state.edit.meals.data,
+      );
 
       dispatch(saveFileStarted());
 
@@ -124,27 +148,31 @@ export function saveFile(id: string): ThunkAction<Promise<void>, State, unknown,
         }
       }
 
-      const fileResponse = await fetch('https://graph.microsoft.com/v1.0/drive/items/' + encodeURIComponent(id) + '/content', {
-        method: "PUT", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        headers: {
-          "Authorization": "Bearer " + authToken,
-          'Content-Type': 'application/json',
+      const fileResponse = await fetch(
+        'https://graph.microsoft.com/v1.0/drive/items/' +
+          encodeURIComponent(id) +
+          '/content',
+        {
+          method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          headers: {
+            Authorization: 'Bearer ' + authToken,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(saveFile),
         },
-        body: JSON.stringify(saveFile)
-      });
+      );
 
       if (!fileResponse.ok) {
         dispatch(saveFileFailed(fileResponse.status));
         return;
       }
       dispatch(saveFileSucceeded());
-
     } catch (e) {
       dispatch(saveFileFailed(-1));
     }
-  }
+  };
 }
 
-export const returnToContent = createAction(actionPrefix + 'Return to content')
+export const returnToContent = createAction(actionPrefix + 'Return to content');

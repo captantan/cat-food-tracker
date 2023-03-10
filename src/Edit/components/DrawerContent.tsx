@@ -1,4 +1,15 @@
-import { List, ListItem, ListItemText, ListItemButton, Toolbar, alpha, Divider, Icon, Typography, Box } from '@mui/material';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  Toolbar,
+  alpha,
+  Divider,
+  Icon,
+  Typography,
+  Box,
+} from '@mui/material';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -10,21 +21,27 @@ export const DrawerContent: React.FC = () => {
   const fileName = useSelector(fileInfoSelectors.fileName);
   const path = useSelector(fileInfoSelectors.path);
 
-  const listItems: Array<{ path: string; text: string; }> = [
+  const listItems: Array<{ path: string; text: string }> = [
     { text: 'Brands', path: './brands' },
   ];
 
   if (hasBrandsAndFlavors) {
-    listItems.push({ text: 'Meals', path: './meals' })
+    listItems.push({ text: 'Meals', path: './meals' });
   }
 
   return (
     <>
       <Toolbar>
-        <Icon color="inherit" sx={{mr: 2}}>description</Icon>
+        <Icon color="inherit" sx={{ mr: 2 }}>
+          description
+        </Icon>
         <Box>
-          <Typography variant="subtitle1" component="h1" gutterBottom={false}>{fileName}</Typography>
-          <Typography variant="caption" component="p">{path}</Typography>
+          <Typography variant="subtitle1" component="h1" gutterBottom={false}>
+            {fileName}
+          </Typography>
+          <Typography variant="caption" component="p">
+            {path}
+          </Typography>
         </Box>
       </Toolbar>
       <List>
@@ -38,8 +55,8 @@ export const DrawerContent: React.FC = () => {
                 borderRadius: '8px',
                 '&.active': {
                   backgroundColor: alpha(theme.palette.primary.main, 0.12),
-                  color: theme.palette.primary.dark
-                }
+                  color: theme.palette.primary.dark,
+                },
               })}>
               <ListItemText>{item.text}</ListItemText>
             </ListItemButton>
@@ -52,5 +69,6 @@ export const DrawerContent: React.FC = () => {
           </ListItemButton>
         </ListItem>
       </List>
-    </>);
-}
+    </>
+  );
+};

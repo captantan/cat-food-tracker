@@ -1,4 +1,5 @@
 import { BrandListState } from '../store/state';
+import { FlavorIdRecord } from './brand';
 import { MealEntry } from './meal';
 
 export enum FilterType {
@@ -8,11 +9,6 @@ export enum FilterType {
 
 export interface FilterBase<TType extends FilterType> {
   type: TType;
-}
-
-export interface FlavorIdRecord {
-  brand: string;
-  flavor: string;
 }
 
 export interface FlavorFilter extends FilterBase<FilterType.Flavors> {

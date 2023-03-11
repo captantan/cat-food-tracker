@@ -18,3 +18,8 @@ export interface Brand extends BrandBase {
 export interface FileBrand extends BrandBase {
   flavors: Flavor[];
 }
+
+export interface FlavorIdRecord {
+  brand: string;
+  flavor: string;
+}

@@ -12,7 +12,10 @@ import { format, parseISO } from 'date-fns';
 
 const mealsFeatureSelector = (state: State) => state.edit.meals;
 
-const mealDictionary = createSelector(mealsFeatureSelector, (f) => f.data);
+export const mealDictionary = createSelector(
+  mealsFeatureSelector,
+  (f) => f.data,
+);
 
 export const mealListVM = createSelector(
   mealDictionary,
@@ -113,4 +116,9 @@ export const initialFormValues = createSelector(
 export const isConfirmDelete = createSelector(
   editState,
   (s) => s.confirmDelete,
+);
+
+export const hasAnyMeals = createSelector(
+  mealDictionary,
+  (dict) => !!Object.values(dict).length,
 );

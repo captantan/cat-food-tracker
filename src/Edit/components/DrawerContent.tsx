@@ -13,10 +13,15 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { CustomNavLink } from '../../components/CustomNavLink';
-import { brandsSelectors, fileInfoSelectors } from '../store/selectors';
+import {
+  brandsSelectors,
+  fileInfoSelectors,
+  mealSelectors,
+} from '../store/selectors';
 
 export const DrawerContent: React.FC = () => {
   const hasBrandsAndFlavors = useSelector(brandsSelectors.hasAnyFlavors);
+  const hasAnyMeals = useSelector(mealSelectors.hasAnyMeals);
   const fileName = useSelector(fileInfoSelectors.fileName);
   const path = useSelector(fileInfoSelectors.path);
 
@@ -26,6 +31,10 @@ export const DrawerContent: React.FC = () => {
 
   if (hasBrandsAndFlavors) {
     listItems.push({ text: 'Meals', path: './meals' });
+  }
+
+  if (hasAnyMeals) {
+    listItems.push({ text: 'Filter', path: './filter' });
   }
 
   return (

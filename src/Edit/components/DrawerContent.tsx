@@ -4,7 +4,6 @@ import {
   ListItemText,
   ListItemButton,
   Toolbar,
-  alpha,
   Divider,
   Icon,
   Typography,
@@ -50,13 +49,9 @@ export const DrawerContent: React.FC = () => {
             <ListItemButton
               component={CustomNavLink}
               to={item.path}
-              activeClassName="active"
+              activeClassName="Mui-selected"
               sx={(theme) => ({
-                borderRadius: '8px',
-                '&.active': {
-                  backgroundColor: alpha(theme.palette.primary.main, 0.12),
-                  color: theme.palette.primary.dark,
-                },
+                borderRadius: theme.shape.borderRadius + 'px',
               })}>
               <ListItemText>{item.text}</ListItemText>
             </ListItemButton>

@@ -1,6 +1,6 @@
 export enum FilterType {
   Tags = 'tags',
-  Flavors = 'flavors'
+  Flavors = 'flavors',
 }
 
 export interface FilterBase<TType extends FilterType> {

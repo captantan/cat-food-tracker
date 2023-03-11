@@ -1,14 +1,23 @@
 import {
+  Checkbox,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
+  InputLabel,
+  ListSubheader,
+  MenuItem,
   Radio,
   RadioGroup,
+  Chip,
+  Select,
+  ListItemText,
+  Box,
 } from '@mui/material';
 import { FormikErrors, useFormik } from 'formik';
+import { unnest } from 'ramda';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FlavorIdRecord } from '../../models/brand';
 import { FilterDefinition, FilterType } from '../../models/filter';
 import { filterActions } from '../../store/actions';
 import { brandsSelectors, filterSelectors } from '../../store/selectors';
@@ -16,7 +25,7 @@ import { brandsSelectors, filterSelectors } from '../../store/selectors';
 interface FormModel {
   type: FilterType;
   tags: string[];
-  flavors: FlavorIdRecord[];
+  flavors: string[]; //FlavorIdRecord as json
 }
 
 function validate(values: FormModel): FormikErrors<FormModel> {
@@ -83,8 +92,90 @@ export const FilterForm: React.FC = () => {
   });
 
   const typeFieldId = React.useId();
-  // const tagFieldId = React.useId();
-  // const flavorFieldId = React.useId();
+  const tagFieldId = React.useId();
+  const flavorFieldId = React.useId();
+
+  let body: React.ReactNode | React.ReactNode[];
+
+  switch (formik.values.type) {
+    case FilterType.Tags:
+      body = (
+        <FormControl
+          fullWidth
+          error={formik.touched.tags && Boolean(formik.errors.tags)}>
+          <InputLabel id={tagFieldId + '-label'}>Tags</InputLabel>
+          <Select
+            multiple
+            labelId={tagFieldId + '-label'}
+            aria-describedby={tagFieldId + '-helper'}
+            id={tagFieldId}
+            name="tags"
+            label="Tags"
+            value={formik.values.tags}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}>
+            {tagOptions.map((t) => (
+              <MenuItem key={t} value={t}>
+                [{t}]
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText id={tagFieldId + '-helper'}>
+            {(formik.touched.tags && formik.errors.tags) || ' '}
+          </FormHelperText>
+        </FormControl>
+      );
+      break;
+    case FilterType.Flavors:
+      body = (
+        <FormControl
+          fullWidth
+          error={formik.touched.flavors && Boolean(formik.errors.flavors)}>
+          <InputLabel id={flavorFieldId + '-label'}>Flavors</InputLabel>
+          <Select
+            multiple
+            labelId={flavorFieldId + '-label'}
+            aria-describedby={flavorFieldId + '-helper'}
+            id={flavorFieldId}
+            name="flavors"
+            label="Flavors"
+            renderValue={(selected) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            value={formik.values.flavors}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}>
+            {unnest(
+              flavorOptions.map((b) =>
+                [
+                  <ListSubheader key={b.brand.id}>
+                    {b.brand.name}
+                  </ListSubheader>,
+                ].concat(
+                  b.flavorsSorted.map((f) => (
+                    <MenuItem key={b.brand.id + f.id} value={f.filterId}>
+                      <Checkbox
+                        checked={formik.values.flavors.includes(f.filterId)}
+                      />
+                      <ListItemText primary={f.name} />
+                    </MenuItem>
+                  )),
+                ),
+              ),
+            )}
+          </Select>
+          <FormHelperText id={flavorFieldId + '-helper'}>
+            {(formik.touched.flavors && (formik.errors.flavors as string)) ||
+              ' '}
+          </FormHelperText>
+        </FormControl>
+      );
+      break;
+  }
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -107,6 +198,8 @@ export const FilterForm: React.FC = () => {
             label="Flavors"
           />
         </RadioGroup>
+
+        {body}
       </FormControl>
     </form>
   );

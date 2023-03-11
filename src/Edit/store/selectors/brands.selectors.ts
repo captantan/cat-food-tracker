@@ -102,16 +102,15 @@ export const fullFlavorList = createSelector(brandDictionary, (bDict) =>
     ascend((b) => b.brand.name),
     Object.values(bDict).map((brand) => ({
       brand: brand,
-      flavorsIds: Object.values(brand.flavors).map((f) => {
-        const fId: FlavorIdRecord = {
-          brand: brand.id,
-          flavor: f.id,
-        };
-        return fId;
-      }),
       flavorsSorted: sort(
         ascend((f) => f.name),
-        Object.values(brand.flavors),
+        Object.values(brand.flavors).map((f) => {
+          const idObj: FlavorIdRecord = {
+            brand: brand.id,
+            flavor: f.id,
+          };
+          return { ...f, filterId: JSON.stringify(idObj) };
+        }),
       ),
     })),
   ),

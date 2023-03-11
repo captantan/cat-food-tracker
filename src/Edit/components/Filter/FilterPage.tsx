@@ -5,6 +5,7 @@ import { CenterBox } from '../../../components/CenterBox';
 import { filterActions } from '../../store/actions';
 import { filterSelectors } from '../../store/selectors';
 import { AppHeader } from '../AppHeader';
+import { FilterForm } from './FilterForm';
 
 export const FilterPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,13 +21,13 @@ export const FilterPage: React.FC = () => {
       <AppHeader title="Meals"></AppHeader>
 
       <Box component="main" sx={{ padding: 3, pb: 1, flex: '1 0 auto' }}>
-        <CenterBox>
-          {showResults ? (
-            <Typography>Results</Typography>
-          ) : (
-            <Typography>Form</Typography>
-          )}
-        </CenterBox>
+        {showResults ? (
+          <Typography>Results</Typography>
+        ) : (
+          <CenterBox>
+            <FilterForm />
+          </CenterBox>
+        )}
       </Box>
     </>
   );

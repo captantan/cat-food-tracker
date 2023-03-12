@@ -1,5 +1,5 @@
 import { format, parseISO } from 'date-fns';
-import { descend, sort } from 'ramda';
+import { ascend, descend, findIndex, sort } from 'ramda';
 import { createSelector } from 'reselect';
 import { State } from '../../../store/state';
 import {
@@ -8,7 +8,7 @@ import {
   MealFilterFn,
   tagFilterFn,
 } from '../../models/filter';
-import { FilterMealViewModel } from '../../models/meal';
+import { FilterMealViewModel, mealListTypeDate } from '../../models/meal';
 import { brandDictionary } from './brands.selectors';
 import { mealDictionary } from './meals.selectors';
 
@@ -37,7 +37,24 @@ export const filtered = createSelector(
     }
 
     return sort(
-      descend((m) => m.date),
+      (a, b) => {
+        const dateRes = descend((entry) => entry.date, a, b);
+        if (dateRes !== 0) {
+          return dateRes;
+        }
+
+        const mealRes = ascend(
+          (entry) =>
+            findIndex((meal) => meal.meal === entry.meal, mealListTypeDate),
+          a,
+          b,
+        );
+        if (mealRes !== 0) {
+          return mealRes;
+        }
+
+        return ascend((entry) => entry.order, a, b);
+      },
       Object.values(mealsDict)
         .filter(filterFn)
         .map((entry) => {
@@ -59,3 +76,5 @@ export const filtered = createSelector(
     );
   },
 );
+
+export const resultCount = createSelector(filtered, (f) => f.length);

@@ -1,14 +1,16 @@
-import { Box, Theme, Typography, useMediaQuery } from '@mui/material';
+import { Box, Theme, useMediaQuery } from '@mui/material';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MobileTabs } from '../../../components/MobileTabs';
 import { filterActions } from '../../store/actions';
+import { filterSelectors } from '../../store/selectors';
 import { AppHeader } from '../AppHeader';
 import { FilterForm } from './FilterForm';
 import { FilterResults } from './FilterResults';
 
 export const FilterPage: React.FC = () => {
   const dispatch = useDispatch();
+  const resultCount = useSelector(filterSelectors.resultCount);
 
   React.useEffect(() => {
     dispatch(filterActions.initPage());
@@ -49,8 +51,22 @@ export const FilterPage: React.FC = () => {
         <Box component="main" sx={{ width: '100%', flex: '1 0 auto' }}>
           <MobileTabs>
             {[
-              { key: 'filters', title: 'Filters', content: <FilterForm /> },
-              { key: 'results', title: 'Results', content: <FilterResults /> },
+              {
+                key: 'filters',
+                title: 'Filters',
+                content: (
+                  <Box sx={{ p: 3 }}>
+                    <FilterForm />
+                  </Box>
+                ),
+                disabled: false,
+              },
+              {
+                key: 'results',
+                title: `Results (${resultCount})`,
+                content: <FilterResults />,
+                disabled: !resultCount,
+              },
             ]}
           </MobileTabs>
         </Box>

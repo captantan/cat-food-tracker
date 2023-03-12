@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 interface TabPanelProps {
@@ -21,9 +20,7 @@ function TabPanel(props: TabPanelProps) {
       id={`${idBase}-tabpanel-${index}`}
       aria-labelledby={`${idBase}-tab-${index}`}
       {...other}>
-      <Box sx={[{ p: 3 }, value !== index && { display: 'none' }]}>
-        {children}
-      </Box>
+      {children}
     </div>
   );
 }
@@ -36,7 +33,12 @@ function a11yProps(idBase: string, index: number) {
 }
 
 export const MobileTabs: React.FC<{
-  children: Array<{ title: string; key: string; content: React.ReactNode }>;
+  children: Array<{
+    title: string;
+    key: string;
+    content: React.ReactNode;
+    disabled: boolean;
+  }>;
 }> = ({ children }) => {
   const [value, setValue] = React.useState(0);
 
@@ -49,9 +51,18 @@ export const MobileTabs: React.FC<{
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="Nav Tabs">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="Nav Tabs"
+          variant="fullWidth">
           {children.map((tab, i) => (
-            <Tab key={i} label={tab.title} {...a11yProps(id, i)} />
+            <Tab
+              key={i}
+              label={tab.title}
+              {...a11yProps(id, i)}
+              disabled={tab.disabled}
+            />
           ))}
         </Tabs>
       </Box>

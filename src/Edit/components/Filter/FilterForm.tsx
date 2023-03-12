@@ -21,6 +21,9 @@ import {
   Typography,
   AccordionDetails,
   Icon,
+  ToggleButton,
+  ToggleButtonGroup,
+  Paper,
 } from '@mui/material';
 import { FormikErrors, useFormik } from 'formik';
 import { equals, uniq, uniqBy, unnest } from 'ramda';
@@ -105,16 +108,18 @@ export const FilterForm: React.FC = () => {
   switch (currentFilters?.type) {
     case FilterType.Tags:
       body = (
-        <List>
-          {tagOptions.map((tag) => (
-            <ListItem key={tag}>
-              <ListItemButton onClick={() => toggleTag(tag)}>
-                <Checkbox checked={currentFilters.tags.includes(tag)} />
-                <ListItemText>[{tag}]</ListItemText>
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        <Paper>
+          <List disablePadding>
+            {tagOptions.map((tag) => (
+              <ListItem key={tag} disableGutters>
+                <ListItemButton onClick={() => toggleTag(tag)}>
+                  <Checkbox checked={currentFilters.tags.includes(tag)} />
+                  <ListItemText>[{tag}]</ListItemText>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
       );
       break;
     case FilterType.Flavors:
@@ -146,25 +151,30 @@ export const FilterForm: React.FC = () => {
 
   return (
     <>
-      <FormControl>
-        <FormLabel id={typeFieldId + '-label'}>Type</FormLabel>
-        <RadioGroup
-          row
+      <FormControl
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContnet: 'center',
+          alignItems: 'center',
+          pb: 2,
+        }}>
+        <FormLabel id={typeFieldId + '-label'} sx={{ pb: 1 }}>
+          Filter Type
+        </FormLabel>
+        <ToggleButtonGroup
+          exclusive
           aria-labelledby={typeFieldId + '-label'}
-          name="type"
           onChange={typeChange}
-          value={currentFilters?.type ?? null}>
-          <FormControlLabel
-            value={FilterType.Tags}
-            control={<Radio />}
-            label="Tags"
-          />
-          <FormControlLabel
-            value={FilterType.Flavors}
-            control={<Radio />}
-            label="Flavors"
-          />
-        </RadioGroup>
+          value={currentFilters?.type ?? null}
+          color="primary">
+          <ToggleButton value={FilterType.Tags} size="small">
+            Tags
+          </ToggleButton>
+          <ToggleButton value={FilterType.Flavors} size="small">
+            Flavors
+          </ToggleButton>
+        </ToggleButtonGroup>
       </FormControl>
 
       {body}

@@ -73,4 +73,5 @@ export interface FilterMealViewModel extends MealEntry {
   brandName: string;
   flavorName: string;
   tags: string[];
+  formattedDate: string;
 }

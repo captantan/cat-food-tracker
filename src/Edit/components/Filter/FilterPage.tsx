@@ -28,11 +28,17 @@ export const FilterPage: React.FC = () => {
           width: '100%',
           boxSizing: 'border-box',
         }}>
-        <Box sx={{ flex: '1 1 auto', borderColor: 'divider', borderRight: 1 }}>
+        <Box
+          sx={{
+            flex: '1 1 33%',
+            borderColor: 'divider',
+            borderRight: 1,
+            pr: 3,
+          }}>
           <FilterForm />
         </Box>
 
-        <Box sx={{ flex: '1 1 auto' }}>
+        <Box sx={{ flex: '1 1 67%', pl: 3 }}>
           <FilterResults />
         </Box>
       </Box>

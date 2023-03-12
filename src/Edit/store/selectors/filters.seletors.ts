@@ -1,3 +1,5 @@
+import { format, parseISO } from 'date-fns';
+import { descend, sort } from 'ramda';
 import { createSelector } from 'reselect';
 import { State } from '../../../store/state';
 import {
@@ -34,20 +36,26 @@ export const filtered = createSelector(
         break;
     }
 
-    return Object.values(mealsDict)
-      .filter(filterFn)
-      .map((entry) => {
-        const brand = brandDict[entry.brand];
-        const flavor = brand.flavors[entry.flavor];
+    return sort(
+      descend((m) => m.date),
+      Object.values(mealsDict)
+        .filter(filterFn)
+        .map((entry) => {
+          const brand = brandDict[entry.brand];
+          const flavor = brand.flavors[entry.flavor];
+          const parsed = parseISO(entry.date);
+          const formatted = format(parsed, 'PPPP');
 
-        const res: FilterMealViewModel = {
-          ...entry,
-          brandName: brand.name,
-          flavorName: flavor.name,
-          tags: flavor.tags,
-        };
+          const res: FilterMealViewModel = {
+            ...entry,
+            brandName: brand.name,
+            flavorName: flavor.name,
+            tags: flavor.tags,
+            formattedDate: formatted,
+          };
 
-        return res;
-      });
+          return res;
+        }),
+    );
   },
 );

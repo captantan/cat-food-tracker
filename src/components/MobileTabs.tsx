@@ -20,7 +20,7 @@ function TabPanel(props: TabPanelProps) {
       id={`${idBase}-tabpanel-${index}`}
       aria-labelledby={`${idBase}-tab-${index}`}
       {...other}>
-      {children}
+      <Box sx={{ overflowY: 'auto', width: '100%' }}>{children}</Box>
     </div>
   );
 }

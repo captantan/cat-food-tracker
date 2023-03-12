@@ -5,7 +5,6 @@ import { FilterDefinition } from '../../models/filter';
 const actionPrefix = editActionPrefix + '[Filter] ';
 
 export const initPage = createAction(actionPrefix + 'Init');
-export const viewResults = createAction<FilterDefinition>(
-  actionPrefix + 'View results',
+export const updateFilters = createAction<FilterDefinition>(
+  actionPrefix + 'Update Filters',
 );
-export const returnToForm = createAction(actionPrefix + 'Return To Form');

@@ -109,7 +109,7 @@ export const fullFlavorList = createSelector(brandDictionary, (bDict) =>
             brand: brand.id,
             flavor: f.id,
           };
-          return { ...f, filterId: JSON.stringify(idObj) };
+          return { ...f, filterId: idObj /*JSON.stringify(idObj)*/ };
         }),
       ),
     })),

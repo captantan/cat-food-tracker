@@ -12,7 +12,7 @@ export interface FilterBase<TType extends FilterType> {
 }
 
 export interface FlavorFilter extends FilterBase<FilterType.Flavors> {
-  flavors: string[]; //FlavorIdRecord as json string
+  flavors: FlavorIdRecord[];
 }
 
 export interface TagFilter extends FilterBase<FilterType.Tags> {
@@ -24,7 +24,7 @@ export type FilterDefinition = FlavorFilter | TagFilter;
 export type MealFilterFn = (entry: MealEntry) => boolean;
 
 export function flavorFilterFn(filter: FlavorFilter): MealFilterFn {
-  const flavors = filter.flavors.map<FlavorIdRecord>((f) => JSON.parse(f));
+  const flavors = filter.flavors; //.map<FlavorIdRecord>((f) => JSON.parse(f));
 
   return (entry) => {
     return flavors.some(

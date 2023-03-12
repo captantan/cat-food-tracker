@@ -13,180 +13,147 @@ import {
   Select,
   ListItemText,
   Box,
+  ListItem,
+  List,
+  ListItemButton,
+  Accordion,
+  AccordionSummary,
+  Typography,
+  AccordionDetails,
+  Icon,
 } from '@mui/material';
 import { FormikErrors, useFormik } from 'formik';
-import { unnest } from 'ramda';
+import { equals, uniq, uniqBy, unnest } from 'ramda';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FilterDefinition, FilterType } from '../../models/filter';
+import { FlavorIdRecord } from '../../models/brand';
+import {
+  FilterDefinition,
+  FilterType,
+  FlavorFilter,
+  TagFilter,
+} from '../../models/filter';
 import { filterActions } from '../../store/actions';
 import { brandsSelectors, filterSelectors } from '../../store/selectors';
-
-interface FormModel {
-  type: FilterType;
-  tags: string[];
-  flavors: string[]; //FlavorIdRecord as json
-}
-
-function validate(values: FormModel): FormikErrors<FormModel> {
-  const errors: FormikErrors<FormModel> = {};
-
-  if (!values.type) {
-    errors.type = 'Type is required';
-  }
-
-  switch (values.type) {
-    case FilterType.Tags:
-      if (!values.tags || !values.tags.length) {
-        errors.tags = 'Must select at least 1 tag to filter on';
-      }
-      break;
-    case FilterType.Flavors:
-      if (!values.flavors || !values.flavors.length) {
-        errors.flavors = 'Must select at least 1 flavor to filter on';
-      }
-      break;
-  }
-  return errors;
-}
-
-const initialValue: FormModel = {
-  type: FilterType.Tags,
-  tags: [],
-  flavors: [],
-};
 
 export const FilterForm: React.FC = () => {
   const dispatch = useDispatch();
 
-  const savedFilters = useSelector(filterSelectors.filterSettings);
+  const currentFilters = useSelector(filterSelectors.filterSettings);
   const tagOptions = useSelector(brandsSelectors.allTags);
   const flavorOptions = useSelector(brandsSelectors.fullFlavorList);
 
-  const formik = useFormik<FormModel>({
-    initialValues: savedFilters
-      ? {
-          type: savedFilters.type,
-          tags: savedFilters.type === FilterType.Tags ? savedFilters.tags : [],
-          flavors:
-            savedFilters.type === FilterType.Flavors
-              ? savedFilters.flavors
-              : [],
-        }
-      : initialValue,
-    validate,
-    onSubmit: (values) => {
-      let filterDef: FilterDefinition;
-
-      switch (values.type) {
-        case FilterType.Tags:
-          filterDef = { type: FilterType.Tags, tags: values.tags };
-          break;
-        case FilterType.Flavors:
-          filterDef = { type: FilterType.Flavors, flavors: values.flavors };
-          break;
-      }
-
-      dispatch(filterActions.viewResults(filterDef));
-    },
-  });
-
   const typeFieldId = React.useId();
-  const tagFieldId = React.useId();
-  const flavorFieldId = React.useId();
+
+  const typeChange = (_event: unknown, value: string) => {
+    switch (value) {
+      case FilterType.Tags:
+        dispatch(
+          filterActions.updateFilters({ type: FilterType.Tags, tags: [] }),
+        );
+        break;
+      case FilterType.Flavors:
+        dispatch(
+          filterActions.updateFilters({
+            type: FilterType.Flavors,
+            flavors: [],
+          }),
+        );
+        break;
+    }
+  };
+
+  const toggleTag = (tag: string) => {
+    let nVal: TagFilter;
+    if (!currentFilters || currentFilters.type !== FilterType.Tags) {
+      nVal = { type: FilterType.Tags, tags: [tag] };
+    } else if (currentFilters.tags.includes(tag)) {
+      nVal = {
+        ...currentFilters,
+        tags: currentFilters.tags.filter((t) => t !== tag),
+      };
+    } else {
+      nVal = {
+        ...currentFilters,
+        tags: uniq(currentFilters.tags.concat(tag)),
+      };
+    }
+
+    dispatch(filterActions.updateFilters(nVal));
+  };
+
+  const toggleFlavor = (flavor: FlavorIdRecord) => {
+    let nVal: FlavorFilter;
+    if (!currentFilters || currentFilters.type !== FilterType.Flavors) {
+      nVal = { type: FilterType.Flavors, flavors: [flavor] };
+    } else if (currentFilters.flavors.includes(flavor)) {
+      nVal = {
+        ...currentFilters,
+        flavors: currentFilters.flavors.filter((t) => !equals(t, flavor)),
+      };
+    } else {
+      nVal = {
+        ...currentFilters,
+        flavors: uniqBy(equals, currentFilters.flavors.concat(flavor)),
+      };
+    }
+
+    dispatch(filterActions.updateFilters(nVal));
+  };
 
   let body: React.ReactNode | React.ReactNode[];
-
-  switch (formik.values.type) {
+  switch (currentFilters?.type) {
     case FilterType.Tags:
       body = (
-        <FormControl
-          fullWidth
-          error={formik.touched.tags && Boolean(formik.errors.tags)}>
-          <InputLabel id={tagFieldId + '-label'}>Tags</InputLabel>
-          <Select
-            multiple
-            labelId={tagFieldId + '-label'}
-            aria-describedby={tagFieldId + '-helper'}
-            id={tagFieldId}
-            name="tags"
-            label="Tags"
-            value={formik.values.tags}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}>
-            {tagOptions.map((t) => (
-              <MenuItem key={t} value={t}>
-                [{t}]
-              </MenuItem>
-            ))}
-          </Select>
-          <FormHelperText id={tagFieldId + '-helper'}>
-            {(formik.touched.tags && formik.errors.tags) || ' '}
-          </FormHelperText>
-        </FormControl>
+        <List>
+          {tagOptions.map((tag) => (
+            <ListItem key={tag}>
+              <ListItemButton onClick={() => toggleTag(tag)}>
+                <Checkbox checked={currentFilters.tags.includes(tag)} />
+                <ListItemText>[{tag}]</ListItemText>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
       );
       break;
     case FilterType.Flavors:
-      body = (
-        <FormControl
-          fullWidth
-          error={formik.touched.flavors && Boolean(formik.errors.flavors)}>
-          <InputLabel id={flavorFieldId + '-label'}>Flavors</InputLabel>
-          <Select
-            multiple
-            labelId={flavorFieldId + '-label'}
-            aria-describedby={flavorFieldId + '-helper'}
-            id={flavorFieldId}
-            name="flavors"
-            label="Flavors"
-            renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            value={formik.values.flavors}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}>
-            {unnest(
-              flavorOptions.map((b) =>
-                [
-                  <ListSubheader key={b.brand.id}>
-                    {b.brand.name}
-                  </ListSubheader>,
-                ].concat(
-                  b.flavorsSorted.map((f) => (
-                    <MenuItem key={b.brand.id + f.id} value={f.filterId}>
-                      <Checkbox
-                        checked={formik.values.flavors.includes(f.filterId)}
-                      />
-                      <ListItemText primary={f.name} />
-                    </MenuItem>
-                  )),
-                ),
-              ),
-            )}
-          </Select>
-          <FormHelperText id={flavorFieldId + '-helper'}>
-            {(formik.touched.flavors && (formik.errors.flavors as string)) ||
-              ' '}
-          </FormHelperText>
-        </FormControl>
-      );
+      body = flavorOptions.map((entry) => (
+        <Accordion key={entry.brand.id}>
+          <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
+            <Typography>{entry.brand.name}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <List>
+              {entry.flavorsSorted.map((f) => (
+                <ListItem key={f.id}>
+                  <ListItemButton onClick={() => toggleFlavor(f.filterId)}>
+                    <Checkbox
+                      checked={currentFilters.flavors.some((cf) =>
+                        equals(cf, f.filterId),
+                      )}
+                    />
+                    <ListItemText>{f.name}</ListItemText>
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </AccordionDetails>
+        </Accordion>
+      ));
       break;
   }
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <>
       <FormControl>
         <FormLabel id={typeFieldId + '-label'}>Type</FormLabel>
         <RadioGroup
+          row
           aria-labelledby={typeFieldId + '-label'}
           name="type"
-          onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
-          value={formik.values.type}>
+          onChange={typeChange}
+          value={currentFilters?.type}>
           <FormControlLabel
             value={FilterType.Tags}
             control={<Radio />}
@@ -198,9 +165,9 @@ export const FilterForm: React.FC = () => {
             label="Flavors"
           />
         </RadioGroup>
-
-        {body}
       </FormControl>
-    </form>
+
+      {body}
+    </>
   );
 };

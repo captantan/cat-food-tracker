@@ -12,11 +12,6 @@ import { mealDictionary } from './meals.selectors';
 
 const featureSelector = (state: State) => state.edit.filters;
 
-export const showResults = createSelector(
-  featureSelector,
-  (f) => f.showResults,
-);
-
 export const filterSettings = createSelector(featureSelector, (f) => f.filter);
 
 export const filtered = createSelector(

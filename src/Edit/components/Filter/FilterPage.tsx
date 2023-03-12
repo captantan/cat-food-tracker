@@ -44,7 +44,7 @@ export const FilterPage: React.FC = () => {
 
   return (
     <>
-      <AppHeader title="Meals"></AppHeader>
+      <AppHeader title="Filters"></AppHeader>
 
       {isMdPlus ? (
         <Box

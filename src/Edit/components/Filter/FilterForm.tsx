@@ -153,7 +153,7 @@ export const FilterForm: React.FC = () => {
           aria-labelledby={typeFieldId + '-label'}
           name="type"
           onChange={typeChange}
-          value={currentFilters?.type}>
+          value={currentFilters?.type ?? null}>
           <FormControlLabel
             value={FilterType.Tags}
             control={<Radio />}

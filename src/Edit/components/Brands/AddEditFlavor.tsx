@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { brandsSelectors } from '../../store/selectors';
 import { v4 as uuidV4 } from 'uuid';
 import { brandsActions } from '../../store/actions';
+import { uniq } from 'ramda';
 
 interface FormModel {
   name: string;
@@ -88,7 +89,10 @@ export const AddEditFlavor: React.FC = () => {
           fullWidth
           id="tags"
           value={formik.values.tags as string[]}
-          onChange={(_event, value) => formik.setFieldValue('tags', value)}
+          onChange={(_event, value) => {
+            value = uniq(value.map((t) => t.trim())).sort();
+            formik.setFieldValue('tags', value);
+          }}
           onBlur={formik.handleBlur}
           clearOnBlur
           multiple

@@ -7,6 +7,8 @@ import { MealList } from './MealList';
 import { Link } from 'react-router-dom';
 import { mealActions } from '../../store/actions';
 import { AddEditMeal } from './AddEditMeal';
+import { CenterColumn } from '../../../components/CenterColumn';
+import { CenterBox } from '../../../components/CenterBox';
 
 export const MealsPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,43 +20,36 @@ export const MealsPage: React.FC = () => {
     <>
       <AppHeader title="Meals"></AppHeader>
 
-      <Box component="main" sx={{ padding: 3, pb: 1, flex: '1 0 auto' }}>
-        {hasAnyFlavors ? (
-          <MealList></MealList>
-        ) : (
-          <>
-            <Typography variant="body1">
-              You must have foods loaded to enter meals
-            </Typography>
-            <Button component={Link} to="../brands">
-              Enter foods
-            </Button>
-          </>
-        )}
-      </Box>
-      <Box
-        sx={(theme) => ({
-          maxWidth: 960,
-          width: '100%',
-          m: '0 auto',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          position: 'sticky',
-          bottom: theme.spacing(2),
-          mb: 2,
-          mt: 1,
-          pr: 2,
-          boxSizing: 'border-box',
-        })}>
-        <Fab
-          color="secondary"
-          onClick={() =>
-            dispatch(mealActions.newMeal({ date: null, meal: null }))
-          }>
-          <Icon>add</Icon>
-        </Fab>
-      </Box>
+      {hasAnyFlavors ? (
+        <CenterColumn>
+          <Box sx={{ flex: '1 0 auto', mb: 1 }}>
+            <MealList></MealList>
+          </Box>
+          <Fab
+            sx={(theme) => ({
+              alignSelf: 'flex-end',
+              position: 'sticky',
+              bottom: theme.spacing(2),
+              right: 0,
+              mr: 2,
+            })}
+            color="secondary"
+            onClick={() =>
+              dispatch(mealActions.newMeal({ date: null, meal: null }))
+            }>
+            <Icon>add</Icon>
+          </Fab>
+        </CenterColumn>
+      ) : (
+        <CenterBox>
+          <Typography variant="body1">
+            You must have foods loaded to enter meals
+          </Typography>
+          <Button component={Link} to="../brands">
+            Enter foods
+          </Button>
+        </CenterBox>
+      )}
 
       <Dialog
         open={editModalOpen}

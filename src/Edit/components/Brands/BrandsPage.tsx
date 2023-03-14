@@ -7,6 +7,7 @@ import { AddEditBrand } from './AddEditBrand';
 import { brandsActions } from '../../store/actions';
 import { AddEditFlavor } from './AddEditFlavor';
 import { AppHeader } from '../AppHeader';
+import { CenterColumn } from '../../../components/CenterColumn';
 
 export const BrandsPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,41 +19,23 @@ export const BrandsPage: React.FC = () => {
     <>
       <AppHeader title="Brands"></AppHeader>
 
-      <Box
-        component="main"
-        sx={{
-          padding: 3,
-          pb: 2,
-          flex: '1 0 auto',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}>
-        <Box
-          sx={{
-            flex: '1 0 auto',
-            maxWidth: '960px',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-          }}>
-          <Box sx={{ flex: '1 0 auto', mb: 1 }}>
-            <BrandList></BrandList>
-          </Box>
-          <Fab
-            sx={(theme) => ({
-              alignSelf: 'flex-end',
-              position: 'sticky',
-              bottom: theme.spacing(2),
-              right: 0,
-              mr: 2,
-            })}
-            color="secondary"
-            onClick={() => dispatch(brandsActions.newBrand())}>
-            <Icon>add</Icon>
-          </Fab>
+      <CenterColumn>
+        <Box sx={{ flex: '1 0 auto', mb: 1 }}>
+          <BrandList></BrandList>
         </Box>
-      </Box>
+        <Fab
+          sx={(theme) => ({
+            alignSelf: 'flex-end',
+            position: 'sticky',
+            bottom: theme.spacing(2),
+            right: 0,
+            mr: 2,
+          })}
+          color="secondary"
+          onClick={() => dispatch(brandsActions.newBrand())}>
+          <Icon>add</Icon>
+        </Fab>
+      </CenterColumn>
 
       <Dialog
         open={editBrandOpen}

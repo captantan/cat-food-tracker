@@ -3,6 +3,7 @@ import {
   Box,
   Breadcrumbs,
   Button,
+  Fab,
   Icon,
   IconButton,
   Link as MatLink,
@@ -11,6 +12,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from '@mui/material';
@@ -20,6 +23,7 @@ import { Link } from 'react-router-dom';
 import { newFileActions } from '../store/actions';
 import { contentSelectors } from '../store/selectors';
 import React from 'react';
+import { useMsal } from '@azure/msal-react';
 
 export const Content: React.FC<{
   path: string;
@@ -30,6 +34,18 @@ export const Content: React.FC<{
 }> = ({ folderName, isRoot, path, backPath, splitPath }) => {
   const content = useSelector(contentSelectors.content);
   const dispatch = useDispatch();
+  const msal = useMsal();
+
+  const [menuButtonEl, setMenuButtonEl] = React.useState<null | HTMLElement>(
+    null,
+  );
+  const menuOpen = Boolean(menuButtonEl);
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setMenuButtonEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setMenuButtonEl(null);
+  };
 
   return (
     <>
@@ -66,16 +82,27 @@ export const Content: React.FC<{
               ))}
             </Breadcrumbs>
           </Box>
-          <Button
-            sx={{ ml: 2 }}
+          <IconButton
             color="inherit"
-            onClick={() => dispatch(newFileActions.openDialog())}>
-            New File
-          </Button>
+            sx={{ mr: -1 }}
+            aria-controls={menuOpen ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={menuOpen ? 'true' : undefined}
+            onClick={handleMenuClick}>
+            <Icon>more_vert</Icon>
+          </IconButton>
+          <Menu
+            anchorEl={menuButtonEl}
+            open={menuOpen}
+            onClose={handleMenuClose}>
+            <MenuItem onClick={() => msal.instance.logoutRedirect()}>
+              Log out
+            </MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ p: 3, flex: '1 0 auto' }}>
         {!!content.folders.length && (
           <Box>
             <Typography variant="overline" component="h2">
@@ -125,6 +152,27 @@ export const Content: React.FC<{
             <Typography variant="body1">Empty Folder</Typography>
           </Box>
         )}
+      </Box>
+      <Box
+        sx={(theme) => ({
+          width: '100%',
+          m: '0 auto',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          position: 'sticky',
+          bottom: theme.spacing(2),
+          mb: 2,
+          mt: 1,
+          pr: 2,
+          boxSizing: 'border-box',
+        })}>
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={() => dispatch(newFileActions.openDialog())}>
+          New File
+        </Button>
       </Box>
     </>
   );

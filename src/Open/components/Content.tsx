@@ -23,6 +23,7 @@ import { newFileActions } from '../store/actions';
 import { contentSelectors } from '../store/selectors';
 import React from 'react';
 import { useMsal } from '@azure/msal-react';
+import { CenterColumn } from '../../components/CenterColumn';
 
 export const Content: React.FC<{
   path: string;
@@ -101,78 +102,72 @@ export const Content: React.FC<{
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ p: 3, flex: '1 0 auto' }}>
-        {!!content.folders.length && (
-          <Box>
-            <Typography variant="overline" component="h2">
-              Folders
-            </Typography>
-            <List>
-              {content.folders.map((folder) => (
-                <ListItem key={folder}>
-                  <ListItemButton
-                    component={Link}
-                    to={`/open/${path ? path + '/' : ''}${encodeURIComponent(
-                      folder,
-                    )}`}>
-                    <ListItemIcon>
-                      <Icon>folder</Icon>
-                    </ListItemIcon>
-                    <ListItemText>{folder}</ListItemText>
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        )}
-        {!!content.files.length && (
-          <Box>
-            <Typography variant="overline" component="h2">
-              Files
-            </Typography>
-            <List>
-              {content.files.map((file) => (
-                <ListItem key={file.id}>
-                  <ListItemButton
-                    component={Link}
-                    to={`/edit/${encodeURIComponent(file.id)}`}>
-                    <ListItemIcon>
-                      <Icon>description</Icon>
-                    </ListItemIcon>
-                    <ListItemText>{file.name}</ListItemText>
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        )}
-        {!content.files.length && !content.folders.length && (
-          <Box>
-            <Typography variant="body1">Empty Folder</Typography>
-          </Box>
-        )}
-      </Box>
-      <Box
-        sx={(theme) => ({
-          width: '100%',
-          m: '0 auto',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          position: 'sticky',
-          bottom: theme.spacing(2),
-          mb: 2,
-          mt: 1,
-          pr: 2,
-          boxSizing: 'border-box',
-        })}>
+      <CenterColumn>
+        <Box sx={{ flex: '1 0 auto' }}>
+          {!!content.folders.length && (
+            <Box>
+              <Typography variant="overline" component="h2">
+                Folders
+              </Typography>
+              <List>
+                {content.folders.map((folder) => (
+                  <ListItem key={folder}>
+                    <ListItemButton
+                      component={Link}
+                      to={`/open/${path ? path + '/' : ''}${encodeURIComponent(
+                        folder,
+                      )}`}>
+                      <ListItemIcon>
+                        <Icon>folder</Icon>
+                      </ListItemIcon>
+                      <ListItemText>{folder}</ListItemText>
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          )}
+          {!!content.files.length && (
+            <Box>
+              <Typography variant="overline" component="h2">
+                Files
+              </Typography>
+              <List>
+                {content.files.map((file) => (
+                  <ListItem key={file.id}>
+                    <ListItemButton
+                      component={Link}
+                      to={`/edit/${encodeURIComponent(file.id)}`}>
+                      <ListItemIcon>
+                        <Icon>description</Icon>
+                      </ListItemIcon>
+                      <ListItemText>{file.name}</ListItemText>
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          )}
+          {!content.files.length && !content.folders.length && (
+            <Box>
+              <Typography variant="body1">Empty Folder</Typography>
+            </Box>
+          )}
+        </Box>
         <Button
+          sx={(theme) => ({
+            alignSelf: 'flex-end',
+            position: 'sticky',
+            bottom: theme.spacing(2),
+            right: 0,
+            mr: 2,
+          })}
           color="secondary"
           variant="contained"
           onClick={() => dispatch(newFileActions.openDialog())}>
           New File
         </Button>
-      </Box>
+      </CenterColumn>
     </>
   );
 };

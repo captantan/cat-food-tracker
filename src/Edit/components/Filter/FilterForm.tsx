@@ -111,10 +111,10 @@ export const FilterForm: React.FC = () => {
         <Paper>
           <List disablePadding>
             {tagOptions.map((tag) => (
-              <ListItem key={tag} disableGutters>
+              <ListItem key={tag} disableGutters disablePadding>
                 <ListItemButton onClick={() => toggleTag(tag)}>
                   <Checkbox checked={currentFilters.tags.includes(tag)} />
-                  <ListItemText>[{tag}]</ListItemText>
+                  <ListItemText>{tag}</ListItemText>
                 </ListItemButton>
               </ListItem>
             ))}
@@ -123,29 +123,50 @@ export const FilterForm: React.FC = () => {
       );
       break;
     case FilterType.Flavors:
-      body = flavorOptions.map((entry) => (
-        <Accordion key={entry.brand.id}>
-          <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
-            <Typography>{entry.brand.name}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <List>
-              {entry.flavorsSorted.map((f) => (
-                <ListItem key={f.id}>
-                  <ListItemButton onClick={() => toggleFlavor(f.filterId)}>
-                    <Checkbox
-                      checked={currentFilters.flavors.some((cf) =>
-                        equals(cf, f.filterId),
-                      )}
-                    />
-                    <ListItemText>{f.name}</ListItemText>
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </AccordionDetails>
-        </Accordion>
-      ));
+      body = flavorOptions.map((entry) => {
+        const countSelectorForBrand = currentFilters.flavors.filter(
+          (fid) => fid.brand === entry.brand.id,
+        ).length;
+
+        return (
+          <Accordion key={entry.brand.id}>
+            <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
+              <Typography
+                sx={
+                  (countSelectorForBrand && {
+                    width: '50%',
+                    pr: 1,
+                    boxSizing: 'border-box',
+                  }) ||
+                  undefined
+                }>
+                {entry.brand.name}
+              </Typography>
+              {!!countSelectorForBrand && (
+                <Typography sx={{ color: 'text.secondary' }}>
+                  {countSelectorForBrand} selected
+                </Typography>
+              )}
+            </AccordionSummary>
+            <AccordionDetails>
+              <List>
+                {entry.flavorsSorted.map((f) => (
+                  <ListItem key={f.id} disableGutters disablePadding>
+                    <ListItemButton onClick={() => toggleFlavor(f.filterId)}>
+                      <Checkbox
+                        checked={currentFilters.flavors.some((cf) =>
+                          equals(cf, f.filterId),
+                        )}
+                      />
+                      <ListItemText>{f.name}</ListItemText>
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </AccordionDetails>
+          </Accordion>
+        );
+      });
       break;
   }
 

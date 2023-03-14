@@ -40,13 +40,13 @@ export const FilterPage: React.FC = () => {
     dispatch(filterActions.initPage());
   }, []);
 
-  const isMdPlus = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const isLgPlus = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   return (
     <>
       <AppHeader title="Filters"></AppHeader>
 
-      {isMdPlus ? (
+      {isLgPlus ? (
         <Box
           component="main"
           sx={{
@@ -81,7 +81,7 @@ export const FilterPage: React.FC = () => {
             </Box>
           </Box>
 
-          <Box sx={{ flex: '1 1 67%', p: 3 }}>
+          <Box sx={{ flex: '1 1 67%', p: 3, overflowY: 'auto' }}>
             <FilterResults />
           </Box>
         </Box>

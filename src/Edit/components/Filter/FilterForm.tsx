@@ -45,6 +45,7 @@ export const FilterForm: React.FC = () => {
   const currentFilters = useSelector(filterSelectors.filterSettings);
   const tagOptions = useSelector(brandsSelectors.allTags);
   const flavorOptions = useSelector(brandsSelectors.fullFlavorList);
+  const expandedBrands = useSelector(filterSelectors.expandedBrands);
 
   const typeFieldId = React.useId();
 
@@ -129,7 +130,12 @@ export const FilterForm: React.FC = () => {
         ).length;
 
         return (
-          <Accordion key={entry.brand.id}>
+          <Accordion
+            key={entry.brand.id}
+            expanded={expandedBrands.includes(entry.brand.id)}
+            onChange={() =>
+              dispatch(filterActions.toggleBrandExpanded(entry.brand.id))
+            }>
             <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
               <Typography
                 sx={

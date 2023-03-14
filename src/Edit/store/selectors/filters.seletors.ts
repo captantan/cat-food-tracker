@@ -78,3 +78,8 @@ export const filtered = createSelector(
 );
 
 export const resultCount = createSelector(filtered, (f) => f.length);
+
+export const expandedBrands = createSelector(
+  featureSelector,
+  (f) => f.expandedBrands,
+);

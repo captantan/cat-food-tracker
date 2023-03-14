@@ -8,3 +8,6 @@ export const initPage = createAction(actionPrefix + 'Init');
 export const updateFilters = createAction<FilterDefinition>(
   actionPrefix + 'Update Filters',
 );
+export const toggleBrandExpanded = createAction<string>(
+  actionPrefix + 'Toggle brand expanded',
+);

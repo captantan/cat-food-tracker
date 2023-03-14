@@ -68,3 +68,10 @@ export const mealListTypeDate = [
   { meal: Meal.Dinner, title: 'Dinner', color: 'green' },
   { meal: Meal.Snack, title: 'Snack', color: 'orange' },
 ];
+
+export interface FilterMealViewModel extends MealEntry {
+  brandName: string;
+  flavorName: string;
+  tags: string[];
+  formattedDate: string;
+}

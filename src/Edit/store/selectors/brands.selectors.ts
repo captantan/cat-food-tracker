@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { State } from '../../../store/state';
 import { ascend, sort } from 'ramda';
+import { FlavorIdRecord } from '../../models/brand';
 
 const brandFeatureSelector = (state: State) => state.edit.brands;
 
@@ -94,4 +95,36 @@ export const getFlavorsForBrand = createSelector(brandDictionary, (bD) => {
       mapped,
     );
   };
+});
+
+export const fullFlavorList = createSelector(brandDictionary, (bDict) =>
+  sort(
+    ascend((b) => b.brand.name),
+    Object.values(bDict).map((brand) => ({
+      brand: brand,
+      flavorsSorted: sort(
+        ascend((f) => f.name),
+        Object.values(brand.flavors).map((f) => {
+          const idObj: FlavorIdRecord = {
+            brand: brand.id,
+            flavor: f.id,
+          };
+          return { ...f, filterId: idObj /*JSON.stringify(idObj)*/ };
+        }),
+      ),
+    })),
+  ),
+);
+
+export const allTags = createSelector(brandDictionary, (bDict) => {
+  const tagSet = new Set<string>();
+  Object.values(bDict).forEach((brand) => {
+    Object.values(brand.flavors).forEach((flavor) => {
+      flavor.tags.forEach((tag) => tagSet.add(tag));
+    });
+  });
+  return sort(
+    ascend((i) => i),
+    [...tagSet],
+  );
 });

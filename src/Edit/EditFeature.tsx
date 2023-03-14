@@ -9,6 +9,7 @@ import { LoadingDisplay } from '../components/LoadingDisplay';
 import { store } from '../store/configure';
 import { BrandsPage } from './components/Brands/BrandsPage';
 import { DataPageFrame } from './components/DataPageFrame';
+import { FilterPage } from './components/Filter/FilterPage';
 import { LandingPage } from './components/LandingPage';
 import { MealsPage } from './components/Meals/MealsPage';
 import { NotFound } from './components/NotFound';
@@ -46,6 +47,7 @@ export const EditFeature: React.FC = () => {
           <Route element={<DataPageFrame />}>
             <Route index element={<LandingPage />} />
             <Route path="brands" element={<BrandsPage />} />
+            <Route path="filter" element={<FilterPage />} />
             <Route path="meals" element={<MealsPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>

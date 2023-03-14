@@ -18,29 +18,40 @@ export const BrandsPage: React.FC = () => {
     <>
       <AppHeader title="Brands"></AppHeader>
 
-      <Box component="main" sx={{ padding: 3, pb: 1, flex: '1 0 auto' }}>
-        <BrandList></BrandList>
-      </Box>
       <Box
-        sx={(theme) => ({
-          maxWidth: 960,
-          width: '100%',
-          m: '0 auto',
+        component="main"
+        sx={{
+          padding: 3,
+          pb: 2,
+          flex: '1 0 auto',
           display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          position: 'sticky',
-          bottom: theme.spacing(2),
-          mb: 2,
-          mt: 1,
-          pr: 2,
-          boxSizing: 'border-box',
-        })}>
-        <Fab
-          color="secondary"
-          onClick={() => dispatch(brandsActions.newBrand())}>
-          <Icon>add</Icon>
-        </Fab>
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}>
+        <Box
+          sx={{
+            flex: '1 0 auto',
+            maxWidth: '960px',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+          }}>
+          <Box sx={{ flex: '1 0 auto', mb: 1 }}>
+            <BrandList></BrandList>
+          </Box>
+          <Fab
+            sx={(theme) => ({
+              alignSelf: 'flex-end',
+              position: 'sticky',
+              bottom: theme.spacing(2),
+              right: 0,
+              mr: 2,
+            })}
+            color="secondary"
+            onClick={() => dispatch(brandsActions.newBrand())}>
+            <Icon>add</Icon>
+          </Fab>
+        </Box>
       </Box>
 
       <Dialog

@@ -1,3 +1,4 @@
+import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 import {
   List,
   ListItem,
@@ -24,6 +25,7 @@ export const DrawerContent: React.FC = () => {
   const hasAnyMeals = useSelector(mealSelectors.hasAnyMeals);
   const fileName = useSelector(fileInfoSelectors.fileName);
   const path = useSelector(fileInfoSelectors.path);
+  const msal = useMsal();
 
   const listItems: Array<{ path: string; text: string }> = [
     { text: 'Brands', path: './brands' },
@@ -69,7 +71,12 @@ export const DrawerContent: React.FC = () => {
         <Divider />
         <ListItem>
           <ListItemButton component={Link} to="/open">
-            <ListItemText>Change Files</ListItemText>
+            <ListItemText>Change File</ListItemText>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton onClick={() => msal.instance.logoutRedirect()}>
+            <ListItemText>Log out</ListItemText>
           </ListItemButton>
         </ListItem>
       </List>

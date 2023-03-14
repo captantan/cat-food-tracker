@@ -1,6 +1,6 @@
 import { Box, Theme, useMediaQuery } from '@mui/material';
 import { CSSProperties } from '@mui/styled-engine';
-import { fromPairs, mapObjIndexed } from 'ramda';
+import { fromPairs } from 'ramda';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MobileTabs } from '../../../components/MobileTabs';

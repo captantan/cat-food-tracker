@@ -1,18 +1,8 @@
 import {
   Checkbox,
   FormControl,
-  FormControlLabel,
-  FormHelperText,
   FormLabel,
-  InputLabel,
-  ListSubheader,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Chip,
-  Select,
   ListItemText,
-  Box,
   ListItem,
   List,
   ListItemButton,
@@ -25,17 +15,11 @@ import {
   ToggleButtonGroup,
   Paper,
 } from '@mui/material';
-import { FormikErrors, useFormik } from 'formik';
-import { equals, uniq, uniqBy, unnest } from 'ramda';
+import { equals, uniq, uniqBy } from 'ramda';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FlavorIdRecord } from '../../models/brand';
-import {
-  FilterDefinition,
-  FilterType,
-  FlavorFilter,
-  TagFilter,
-} from '../../models/filter';
+import { FilterType, FlavorFilter, TagFilter } from '../../models/filter';
 import { filterActions } from '../../store/actions';
 import { brandsSelectors, filterSelectors } from '../../store/selectors';
 

@@ -9,13 +9,14 @@ import {
   IconButton,
   Icon,
   Typography,
+  Box,
 } from '@mui/material';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { formatISO, subDays } from 'date-fns';
+import { formatISO, isSameDay, subDays } from 'date-fns';
 import { useFormik, FormikErrors } from 'formik';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,6 +41,9 @@ export const AddEditMeal: React.FC = () => {
   const initialValues = useSelector(mealSelectors.initialFormValues);
   const brands = useSelector(brandsSelectors.brandSelectList);
   const flavorsForBrand = useSelector(brandsSelectors.getFlavorsForBrand);
+
+  const today = new Date();
+  const yesterday = subDays(today, 1);
 
   const validate = React.useCallback(
     (values: MealFormModel) => {
@@ -178,14 +182,25 @@ export const AddEditMeal: React.FC = () => {
             )}></DatePicker>
 
           {!isEdit && (
-            <ButtonGroup sx={{ mb: 3 }}>
+            <ButtonGroup sx={{ mb: 3 }} fullWidth>
               <Button
-                onClick={() =>
-                  formik.setFieldValue('date', subDays(new Date(), 1))
-                }>
+                variant={
+                  isSameDay(yesterday, formik.values.date)
+                    ? 'contained'
+                    : 'outlined'
+                }
+                disableElevation
+                onClick={() => formik.setFieldValue('date', yesterday)}>
                 Yesterday
               </Button>
-              <Button onClick={() => formik.setFieldValue('date', new Date())}>
+              <Button
+                variant={
+                  isSameDay(today, formik.values.date)
+                    ? 'contained'
+                    : 'outlined'
+                }
+                disableElevation
+                onClick={() => formik.setFieldValue('date', today)}>
                 Today
               </Button>
             </ButtonGroup>
@@ -313,12 +328,14 @@ export const AddEditMeal: React.FC = () => {
         </DialogContent>
         <DialogActions>
           {isEdit && (
-            <IconButton
-              color="warning"
-              type="button"
-              onClick={() => dispatch(mealActions.deleteMeal())}>
-              <Icon>delete</Icon>
-            </IconButton>
+            <Box sx={{ flex: '1 0 auto' }}>
+              <IconButton
+                color="warning"
+                type="button"
+                onClick={() => dispatch(mealActions.deleteMeal())}>
+                <Icon>delete</Icon>
+              </IconButton>
+            </Box>
           )}
           <Button
             type="button"

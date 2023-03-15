@@ -174,6 +174,7 @@ export const FilterForm: React.FC = () => {
           Filter Type
         </FormLabel>
         <ToggleButtonGroup
+          fullWidth
           exclusive
           aria-labelledby={typeFieldId + '-label'}
           onChange={typeChange}

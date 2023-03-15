@@ -14,12 +14,19 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Paper,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
 import { equals, uniq, uniqBy } from 'ramda';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FlavorIdRecord } from '../../models/brand';
-import { FilterType, FlavorFilter, TagFilter } from '../../models/filter';
+import {
+  FilterDefinition,
+  FilterType,
+  FlavorFilter,
+  TagFilter,
+} from '../../models/filter';
 import { filterActions } from '../../store/actions';
 import { brandsSelectors, filterSelectors } from '../../store/selectors';
 
@@ -37,7 +44,11 @@ export const FilterForm: React.FC = () => {
     switch (value) {
       case FilterType.Tags:
         dispatch(
-          filterActions.updateFilters({ type: FilterType.Tags, tags: [] }),
+          filterActions.updateFilters({
+            type: FilterType.Tags,
+            tags: [],
+            inverse: false,
+          }),
         );
         break;
       case FilterType.Flavors:
@@ -45,6 +56,7 @@ export const FilterForm: React.FC = () => {
           filterActions.updateFilters({
             type: FilterType.Flavors,
             flavors: [],
+            inverse: false,
           }),
         );
         break;
@@ -54,7 +66,7 @@ export const FilterForm: React.FC = () => {
   const toggleTag = (tag: string) => {
     let nVal: TagFilter;
     if (!currentFilters || currentFilters.type !== FilterType.Tags) {
-      nVal = { type: FilterType.Tags, tags: [tag] };
+      nVal = { type: FilterType.Tags, tags: [tag], inverse: false };
     } else if (currentFilters.tags.includes(tag)) {
       nVal = {
         ...currentFilters,
@@ -73,7 +85,7 @@ export const FilterForm: React.FC = () => {
   const toggleFlavor = (flavor: FlavorIdRecord) => {
     let nVal: FlavorFilter;
     if (!currentFilters || currentFilters.type !== FilterType.Flavors) {
-      nVal = { type: FilterType.Flavors, flavors: [flavor] };
+      nVal = { type: FilterType.Flavors, flavors: [flavor], inverse: false };
     } else if (currentFilters.flavors.includes(flavor)) {
       nVal = {
         ...currentFilters,
@@ -86,6 +98,13 @@ export const FilterForm: React.FC = () => {
       };
     }
 
+    dispatch(filterActions.updateFilters(nVal));
+  };
+
+  const toggleInverse = () => {
+    const nVal: FilterDefinition = currentFilters
+      ? { ...currentFilters, inverse: !currentFilters.inverse }
+      : { type: FilterType.Tags, inverse: false, tags: [] };
     dispatch(filterActions.updateFilters(nVal));
   };
 
@@ -188,6 +207,17 @@ export const FilterForm: React.FC = () => {
           </ToggleButton>
         </ToggleButtonGroup>
       </FormControl>
+
+      <FormControlLabel
+        control={
+          <Switch
+            checked={currentFilters?.inverse ?? false}
+            onChange={toggleInverse}
+          />
+        }
+        label="Invert Filter"
+        sx={{ mb: 1 }}
+      />
 
       {body}
     </>

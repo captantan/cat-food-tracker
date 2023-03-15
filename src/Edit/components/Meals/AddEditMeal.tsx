@@ -9,6 +9,7 @@ import {
   IconButton,
   Icon,
   Typography,
+  Box,
 } from '@mui/material';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import FormControl from '@mui/material/FormControl';
@@ -313,12 +314,14 @@ export const AddEditMeal: React.FC = () => {
         </DialogContent>
         <DialogActions>
           {isEdit && (
-            <IconButton
-              color="warning"
-              type="button"
-              onClick={() => dispatch(mealActions.deleteMeal())}>
-              <Icon>delete</Icon>
-            </IconButton>
+            <Box sx={{ flex: '1 0 auto' }}>
+              <IconButton
+                color="warning"
+                type="button"
+                onClick={() => dispatch(mealActions.deleteMeal())}>
+                <Icon>delete</Icon>
+              </IconButton>
+            </Box>
           )}
           <Button
             type="button"

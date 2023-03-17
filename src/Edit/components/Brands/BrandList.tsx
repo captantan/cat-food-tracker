@@ -28,7 +28,7 @@ export const BrandList: React.FC = () => {
     <>
       {list.length ? (
         list.map((brand) => (
-          <Card sx={{ w: '100%', mb: '16px' }} key={brand.id}>
+          <Card sx={{ w: '100%', mb: 3 }} key={brand.id}>
             <CardHeader
               title={brand.name}
               titleTypographyProps={{ variant: 'h6' }}></CardHeader>

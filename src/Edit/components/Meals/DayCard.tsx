@@ -20,7 +20,7 @@ export const DayCard: React.FC<{ date: MealDayViewModel }> = ({ date }) => {
   const dispatch = useDispatch();
 
   return (
-    <Card sx={{ w: '100%', mb: '16px' }} key={date.date}>
+    <Card sx={{ w: '100%', mb: 3 }} key={date.date}>
       <CardHeader
         title={date.formatted}
         titleTypographyProps={{ variant: 'h6', component: 'h3' }}

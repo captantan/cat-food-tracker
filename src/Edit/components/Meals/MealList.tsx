@@ -12,7 +12,7 @@ export const MealList: React.FC = () => {
       {list.length ? (
         list.map((date) => <DayCard date={date} key={date.date} />)
       ) : (
-        <Typography component="p" variant="caption">
+        <Typography component="p" variant="caption" textAlign="center">
           No meals, yet
         </Typography>
       )}

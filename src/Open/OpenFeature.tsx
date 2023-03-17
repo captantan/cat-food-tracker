@@ -8,6 +8,7 @@ import { LoadingDisplay } from '../components/LoadingDisplay';
 import { store } from '../store/configure';
 import { Content } from './components/Content';
 import { NewFileForm } from './components/NewFileForm';
+import { NotFound } from './components/NotFound';
 import { loadingActions, newFileActions } from './store/actions';
 import { loadingSelectors, newFileSelectors } from './store/selectors';
 
@@ -27,6 +28,7 @@ export const OpenFeature: React.FC = () => {
   const isRoot = !path.trim();
   const splitPath = path.split('/');
   const folderName = splitPath.pop() ?? null;
+  const backPath = `/open/${splitPath.join('/')}`;
 
   React.useEffect(() => {
     dispatch(loadingActions.loadContent(path));
@@ -36,12 +38,17 @@ export const OpenFeature: React.FC = () => {
     case 'loading':
       return <LoadingDisplay text="Getting folder content..." />;
     case 'error':
-      return (
-        <ErrorDisplay
-          errorCode={error}
-          onClick={() => dispatch(loadingActions.loadContent(path))}
-        />
-      );
+      switch (error) {
+        case 404:
+          return <NotFound backPath={backPath} />;
+        default:
+          return (
+            <ErrorDisplay
+              errorCode={error}
+              onClick={() => dispatch(loadingActions.loadContent(path))}
+            />
+          );
+      }
     case 'content':
       return (
         <>
@@ -50,7 +57,7 @@ export const OpenFeature: React.FC = () => {
             isRoot={isRoot}
             folderName={folderName}
             path={path}
-            backPath={`/open/${splitPath.join('/')}`}
+            backPath={backPath}
           />
 
           <Dialog

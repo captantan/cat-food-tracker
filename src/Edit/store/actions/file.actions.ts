@@ -110,6 +110,7 @@ export function loadFile(
 
       dispatch(loadFileSucceeded(fromSaveFile(resp)));
     } catch (e) {
+      console.error('loadFile: ', e);
       dispatch(loadFileFailed(-1));
     }
   };

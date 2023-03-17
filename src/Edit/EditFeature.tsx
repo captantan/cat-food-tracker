@@ -1,9 +1,7 @@
-import { Button, Icon, Typography } from '@mui/material';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Route, Routes, useParams } from 'react-router-dom';
-import { CenterBox } from '../components/CenterBox';
 import { ErrorDisplay } from '../components/ErrorDisplay';
 import { LoadingDisplay } from '../components/LoadingDisplay';
 import { store } from '../store/configure';
@@ -12,9 +10,11 @@ import { DataPageFrame } from './components/DataPageFrame';
 import { FilterPage } from './components/Filter/FilterPage';
 import { LandingPage } from './components/LandingPage';
 import { MealsPage } from './components/Meals/MealsPage';
-import { NotFound } from './components/NotFound';
+import { FallbackRoute } from './components/FallbackRoute';
 import { fileActions } from './store/actions';
 import { fileLoadingSelectors } from './store/selectors';
+import { NotFound } from './components/NotFound';
+import { Saved } from './components/Saved';
 
 export const EditFeature: React.FC = () => {
   const dispatch = useDispatch<typeof store.dispatch>();
@@ -33,14 +33,19 @@ export const EditFeature: React.FC = () => {
     case 'loading':
       return <LoadingDisplay text="Loading the file..." />;
     case 'error':
-      return (
-        <ErrorDisplay
-          errorCode={error}
-          onClick={() => {
-            dispatch(fileActions.loadFile(fileId));
-          }}
-        />
-      );
+      switch (error) {
+        case 404:
+          return <NotFound />;
+        default:
+          return (
+            <ErrorDisplay
+              errorCode={error}
+              onClick={() => {
+                dispatch(fileActions.loadFile(fileId));
+              }}
+            />
+          );
+      }
     case 'content':
       return (
         <Routes>
@@ -49,7 +54,7 @@ export const EditFeature: React.FC = () => {
             <Route path="brands" element={<BrandsPage />} />
             <Route path="filter" element={<FilterPage />} />
             <Route path="meals" element={<MealsPage />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<FallbackRoute />} />
           </Route>
         </Routes>
       );
@@ -66,24 +71,6 @@ export const EditFeature: React.FC = () => {
         />
       );
     case 'saved':
-      return (
-        <CenterBox>
-          <Icon
-            color="primary"
-            fontSize="inherit"
-            sx={{ mb: 0, fontWeight: 100, fontSize: 180 }}>
-            check_circle
-          </Icon>
-          <Typography variant="body1" sx={{ mb: 3 }} color="primary">
-            Successfully saved
-          </Typography>
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={() => dispatch(fileActions.returnToContent())}>
-            Return to content
-          </Button>
-        </CenterBox>
-      );
+      return <Saved action={() => dispatch(fileActions.returnToContent())} />;
   }
 };

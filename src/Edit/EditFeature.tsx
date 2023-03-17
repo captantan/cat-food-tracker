@@ -1,9 +1,7 @@
-import { Button, Icon, Typography } from '@mui/material';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Link, Route, Routes, useParams } from 'react-router-dom';
-import { CenterBox } from '../components/CenterBox';
+import { Route, Routes, useParams } from 'react-router-dom';
 import { ErrorDisplay } from '../components/ErrorDisplay';
 import { LoadingDisplay } from '../components/LoadingDisplay';
 import { store } from '../store/configure';
@@ -12,9 +10,11 @@ import { DataPageFrame } from './components/DataPageFrame';
 import { FilterPage } from './components/Filter/FilterPage';
 import { LandingPage } from './components/LandingPage';
 import { MealsPage } from './components/Meals/MealsPage';
-import { NotFound } from './components/NotFound';
+import { FallbackRoute } from './components/FallbackRoute';
 import { fileActions } from './store/actions';
 import { fileLoadingSelectors } from './store/selectors';
+import { NotFound } from './components/NotFound';
+import { Saved } from './components/Saved';
 
 export const EditFeature: React.FC = () => {
   const dispatch = useDispatch<typeof store.dispatch>();
@@ -35,34 +35,7 @@ export const EditFeature: React.FC = () => {
     case 'error':
       switch (error) {
         case 404:
-          return (
-            <CenterBox>
-              <Icon
-                color="primary"
-                sx={{ mb: 1, fontSize: 180, fontWeight: 100 }}>
-                unknown_document
-              </Icon>
-              <Typography variant="h6" component="h2" gutterBottom={false}>
-                We can&apos;t find that file...
-              </Typography>
-              <Typography
-                variant="caption"
-                component="p"
-                textAlign="center"
-                sx={{ maxWidth: '360px', mb: 3 }}>
-                It looks like that file doesn&apos;t exist or cannot be
-                accessed. Try picking another file.
-              </Typography>
-
-              <Button
-                component={Link}
-                to="/open"
-                variant="outlined"
-                color="primary">
-                Browse Files
-              </Button>
-            </CenterBox>
-          );
+          return <NotFound />;
         default:
           return (
             <ErrorDisplay
@@ -81,7 +54,7 @@ export const EditFeature: React.FC = () => {
             <Route path="brands" element={<BrandsPage />} />
             <Route path="filter" element={<FilterPage />} />
             <Route path="meals" element={<MealsPage />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<FallbackRoute />} />
           </Route>
         </Routes>
       );
@@ -98,24 +71,6 @@ export const EditFeature: React.FC = () => {
         />
       );
     case 'saved':
-      return (
-        <CenterBox>
-          <Icon
-            color="primary"
-            fontSize="inherit"
-            sx={{ mb: 0, fontWeight: 100, fontSize: 180 }}>
-            check_circle
-          </Icon>
-          <Typography variant="body1" sx={{ mb: 3 }} color="primary">
-            Successfully saved
-          </Typography>
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={() => dispatch(fileActions.returnToContent())}>
-            Return to content
-          </Button>
-        </CenterBox>
-      );
+      return <Saved action={() => dispatch(fileActions.returnToContent())} />;
   }
 };

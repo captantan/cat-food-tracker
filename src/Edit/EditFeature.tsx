@@ -2,7 +2,7 @@ import { Button, Icon, Typography } from '@mui/material';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Route, Routes, useParams } from 'react-router-dom';
+import { Link, Route, Routes, useParams } from 'react-router-dom';
 import { CenterBox } from '../components/CenterBox';
 import { ErrorDisplay } from '../components/ErrorDisplay';
 import { LoadingDisplay } from '../components/LoadingDisplay';
@@ -33,14 +33,46 @@ export const EditFeature: React.FC = () => {
     case 'loading':
       return <LoadingDisplay text="Loading the file..." />;
     case 'error':
-      return (
-        <ErrorDisplay
-          errorCode={error}
-          onClick={() => {
-            dispatch(fileActions.loadFile(fileId));
-          }}
-        />
-      );
+      switch (error) {
+        case 404:
+          return (
+            <CenterBox>
+              <Icon
+                color="primary"
+                sx={{ mb: 1, fontSize: 180, fontWeight: 100 }}>
+                unknown_document
+              </Icon>
+              <Typography variant="h6" component="h2" gutterBottom={false}>
+                We can&apos;t find that file...
+              </Typography>
+              <Typography
+                variant="caption"
+                component="p"
+                textAlign="center"
+                sx={{ maxWidth: '360px', mb: 3 }}>
+                It looks like that file doesn&apos;t exist or cannot be
+                accessed. Try picking another file.
+              </Typography>
+
+              <Button
+                component={Link}
+                to="/open"
+                variant="outlined"
+                color="primary">
+                Browse Files
+              </Button>
+            </CenterBox>
+          );
+        default:
+          return (
+            <ErrorDisplay
+              errorCode={error}
+              onClick={() => {
+                dispatch(fileActions.loadFile(fileId));
+              }}
+            />
+          );
+      }
     case 'content':
       return (
         <Routes>

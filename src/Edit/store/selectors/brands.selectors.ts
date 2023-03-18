@@ -17,14 +17,16 @@ export const brandListVM = createSelector(brandDictionary, (b) => {
     brands,
   );
 
-  return sorted.map((b) => {
-    const flavors = sort(
-      ascend((f) => f.name),
-      Object.values(b.flavors),
-    );
+  return sorted;
 
-    return { id: b.id, name: b.name, flavors };
-  });
+  // return sorted.map((b) => {
+  //   const flavors = sort(
+  //     ascend((f) => f.name),
+  //     Object.values(b.flavors),
+  //   );
+
+  //   return { id: b.id, name: b.name, flavors };
+  // });
 });
 
 const editState = createSelector(brandFeatureSelector, (f) => f.edit);

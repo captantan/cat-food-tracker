@@ -9,7 +9,7 @@ import { AddEditFlavor } from './AddEditFlavor';
 import { AppHeader } from '../AppHeader';
 import { CenterColumn } from '../../../components/CenterColumn';
 
-export const BrandsPage: React.FC = () => {
+export const BrandsListPage: React.FC = () => {
   const dispatch = useDispatch();
 
   const editBrandOpen = useSelector(brandsSelectors.isEditBrandOpen);
@@ -21,7 +21,7 @@ export const BrandsPage: React.FC = () => {
 
       <CenterColumn>
         <Box sx={{ flex: '1 0 auto', mb: 1 }}>
-          <BrandList></BrandList>
+          <BrandList basePath="./"></BrandList>
         </Box>
         <Fab
           sx={(theme) => ({

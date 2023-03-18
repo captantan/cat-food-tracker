@@ -5,7 +5,7 @@ import { Route, Routes, useParams } from 'react-router-dom';
 import { ErrorDisplay } from '../components/ErrorDisplay';
 import { LoadingDisplay } from '../components/LoadingDisplay';
 import { store } from '../store/configure';
-import { BrandsPage } from './components/Brands/BrandsPage';
+import { BrandsListPage } from './components/Brands/BrandsListPage';
 import { DataPageFrame } from './components/DataPageFrame';
 import { FilterPage } from './components/Filter/FilterPage';
 import { LandingPage } from './components/LandingPage';
@@ -51,7 +51,10 @@ export const EditFeature: React.FC = () => {
         <Routes>
           <Route element={<DataPageFrame />}>
             <Route index element={<LandingPage />} />
-            <Route path="brands" element={<BrandsPage />} />
+            <Route path="brands">
+              <Route index element={<BrandsListPage />} />
+              <Route path=":brandId" element={<LandingPage />} />
+            </Route>
             <Route path="filter" element={<FilterPage />} />
             <Route path="meals" element={<MealsPage />} />
             <Route path="*" element={<FallbackRoute />} />

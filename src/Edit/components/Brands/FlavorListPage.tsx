@@ -5,20 +5,25 @@ import {
   Icon,
   Typography,
   Box,
+  Fab,
+  Button,
 } from '@mui/material';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { CenterBox } from '../../../components/CenterBox';
 import { CenterColumn } from '../../../components/CenterColumn';
 import { mapCssProp } from '../../../utils';
+import { brandsActions } from '../../store/actions';
 import { selectedBrandSelectors } from '../../store/selectors/brands.selectors';
 import { AppHeader } from '../AppHeader';
 import { BrandList } from './BrandList';
 import { FlavorList } from './FlavorList';
 
 export const FlavorListPage: React.FC = () => {
+  const dispatch = useDispatch();
+
   // to be able to nav to this page, you must have brandId set
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const brandId = useParams().brandId!;
@@ -56,6 +61,35 @@ export const FlavorListPage: React.FC = () => {
 
   const brandName = useSelector(selectors.name);
   const isLgPlus = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
+
+  const mainContent = (
+    <>
+      <Box sx={{ flex: '1 0 auto', mb: 1 }}>
+        <Button
+          onClick={() => dispatch(brandsActions.editBrand(brandId))}
+          variant="contained"
+          fullWidth
+          sx={{
+            mb: 3,
+          }}>
+          Edit Brand
+        </Button>
+        <FlavorList brandId={brandId} />
+      </Box>
+      <Fab
+        sx={(theme) => ({
+          alignSelf: 'flex-end',
+          position: 'sticky',
+          bottom: theme.spacing(2),
+          right: 0,
+          mr: 2,
+        })}
+        color="secondary"
+        onClick={() => dispatch(brandsActions.newBrand())}>
+        <Icon>add</Icon>
+      </Fab>
+    </>
+  );
 
   return (
     <>
@@ -98,14 +132,18 @@ export const FlavorListPage: React.FC = () => {
               <BrandList basePath="../" />
             </Box>
           </Box>
-          <Box sx={{ flex: '1 1 67%', p: 3, overflowY: 'auto' }}>
-            <FlavorList brandId={brandId} />
+          <Box
+            sx={{
+              flex: '1 1 67%',
+              p: 3,
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
+            {mainContent}
           </Box>
         </Box>
       ) : (
-        <CenterColumn>
-          <FlavorList brandId={brandId} />
-        </CenterColumn>
+        <CenterColumn>{mainContent}</CenterColumn>
       )}
     </>
   );

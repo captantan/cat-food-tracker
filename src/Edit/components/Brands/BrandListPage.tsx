@@ -1,19 +1,13 @@
-import { Dialog, Box, Fab, Icon } from '@mui/material';
+import { Box, Fab, Icon } from '@mui/material';
 import React from 'react';
 import { BrandList } from './BrandList';
-import { useDispatch, useSelector } from 'react-redux';
-import { brandsSelectors } from '../../store/selectors';
-import { AddEditBrand } from './AddEditBrand';
+import { useDispatch } from 'react-redux';
 import { brandsActions } from '../../store/actions';
-import { AddEditFlavor } from './AddEditFlavor';
 import { AppHeader } from '../AppHeader';
 import { CenterColumn } from '../../../components/CenterColumn';
 
-export const BrandsListPage: React.FC = () => {
+export const BrandListPage: React.FC = () => {
   const dispatch = useDispatch();
-
-  const editBrandOpen = useSelector(brandsSelectors.isEditBrandOpen);
-  const editFlavorOpen = useSelector(brandsSelectors.isEditFlavorOpen);
 
   return (
     <>
@@ -36,17 +30,6 @@ export const BrandsListPage: React.FC = () => {
           <Icon>add</Icon>
         </Fab>
       </CenterColumn>
-
-      <Dialog
-        open={editBrandOpen}
-        onClose={() => dispatch(brandsActions.cancelEditBrand())}>
-        <AddEditBrand></AddEditBrand>
-      </Dialog>
-      <Dialog
-        open={editFlavorOpen}
-        onClose={() => dispatch(brandsActions.cacncelEditFlavor())}>
-        <AddEditFlavor></AddEditFlavor>
-      </Dialog>
     </>
   );
 };

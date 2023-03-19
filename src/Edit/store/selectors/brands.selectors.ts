@@ -130,3 +130,29 @@ export const allTags = createSelector(brandDictionary, (bDict) => {
     [...tagSet],
   );
 });
+
+export function selectedBrandSelectors(brandId: string) {
+  const selectedBrand = createSelector(
+    brandDictionary,
+    (dict) => dict[brandId],
+  );
+  return {
+    exists: createSelector(selectedBrand, (b) => !!b),
+    name: createSelector(selectedBrand, (b) => b.name),
+  };
+}
+
+export function flavorsForBrand(brandId: string) {
+  return createSelector(brandDictionary, (dict) => {
+    const brand = dict[brandId];
+
+    if (!brand) {
+      return [];
+    }
+
+    return sort(
+      ascend((f) => f.name),
+      Object.values(brand.flavors),
+    );
+  });
+}

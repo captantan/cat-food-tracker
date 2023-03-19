@@ -22,7 +22,10 @@ export const BrandList: React.FC<{ basePath: string }> = ({ basePath }) => {
               <ListItemButton
                 component={CustomNavLink}
                 to={basePath + brand.id}
-                activeClassName="Mui-selected">
+                activeClassName="Mui-selected"
+                sx={(theme) => ({
+                  borderRadius: theme.shape.borderRadius + 'px',
+                })}>
                 <ListItemText>{brand.name}</ListItemText>
               </ListItemButton>
             </ListItem>

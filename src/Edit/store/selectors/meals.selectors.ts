@@ -128,6 +128,10 @@ export const getNextOrder = createSelector(mealDictionary, (dict) => {
     const existing = Object.values(dict).filter(
       (m) => m.date === date && m.meal === meal,
     );
-    return Math.max(...existing.map((m) => m.order)) + 1;
+    if (existing.length) {
+      return Math.max(...existing.map((m) => m.order)) + 1;
+    } else {
+      return 0;
+    }
   };
 });

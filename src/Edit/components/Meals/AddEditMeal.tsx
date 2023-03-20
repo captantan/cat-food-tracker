@@ -41,6 +41,7 @@ export const AddEditMeal: React.FC = () => {
   const initialValues = useSelector(mealSelectors.initialFormValues);
   const brands = useSelector(brandsSelectors.brandSelectList);
   const flavorsForBrand = useSelector(brandsSelectors.getFlavorsForBrand);
+  const getNextOrder = useSelector(mealSelectors.getNextOrder);
 
   const today = new Date();
   const yesterday = subDays(today, 1);
@@ -99,9 +100,10 @@ export const AddEditMeal: React.FC = () => {
           notes: values.notes,
         };
       } else {
+        const date = formatISO(values.date, { representation: 'date' });
         meal = {
           id: uuidV4(),
-          date: formatISO(values.date, { representation: 'date' }),
+          date,
           meal: values.meal,
           amount: values.amount || null,
           // must be non-null for the validation to pass and submit to be called
@@ -111,7 +113,7 @@ export const AddEditMeal: React.FC = () => {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           flavor: values.flavor!,
           notes: values.notes,
-          order: 0, //TODO: make this dynamic
+          order: getNextOrder(date, values.meal),
         };
       }
 

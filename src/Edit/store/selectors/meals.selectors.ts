@@ -122,3 +122,12 @@ export const hasAnyMeals = createSelector(
   mealDictionary,
   (dict) => !!Object.values(dict).length,
 );
+
+export const getNextOrder = createSelector(mealDictionary, (dict) => {
+  return (date: string, meal: Meal) => {
+    const existing = Object.values(dict).filter(
+      (m) => m.date === date && m.meal === meal,
+    );
+    return Math.max(...existing.map((m) => m.order)) + 1;
+  };
+});

@@ -1,5 +1,5 @@
 import { format, parseISO } from 'date-fns';
-import { ascend, descend, findIndex, sort } from 'ramda';
+import { descend, findIndex, sort } from 'ramda';
 import { createSelector } from 'reselect';
 import { State } from '../../../store/state';
 import {
@@ -43,7 +43,7 @@ export const filtered = createSelector(
           return dateRes;
         }
 
-        const mealRes = ascend(
+        const mealRes = descend(
           (entry) =>
             findIndex((meal) => meal.meal === entry.meal, mealListTypeDate),
           a,
@@ -53,7 +53,7 @@ export const filtered = createSelector(
           return mealRes;
         }
 
-        return ascend((entry) => entry.order, a, b);
+        return descend((entry) => entry.order, a, b);
       },
       Object.values(mealsDict)
         .filter(filterFn)

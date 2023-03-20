@@ -85,7 +85,7 @@ export const FlavorListPage: React.FC = () => {
           mr: 2,
         })}
         color="secondary"
-        onClick={() => dispatch(brandsActions.newBrand())}>
+        onClick={() => dispatch(brandsActions.newFlavor({ brand: brandId }))}>
         <Icon>add</Icon>
       </Fab>
     </>

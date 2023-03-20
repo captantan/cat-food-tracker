@@ -16,6 +16,7 @@ import { store } from '../../store/configure';
 
 interface AppHeaderProps {
   title: string;
+  primaryAction?: React.ReactNode;
 }
 
 export const AppHeader: React.FC<AppHeaderProps> = (props) => {
@@ -36,14 +37,16 @@ export const AppHeader: React.FC<AppHeaderProps> = (props) => {
         flex: '0 0 auto',
       }}>
       <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={() => dispatch(uiActions.toggleDrawer())}
-          sx={{ mr: 2, display: { md: 'none' } }}>
-          <Icon>{drawerOpen ? 'menu_open' : 'menu'}</Icon>
-        </IconButton>
+        {props.primaryAction || (
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={() => dispatch(uiActions.toggleDrawer())}
+            sx={{ mr: 2, display: { md: 'none' } }}>
+            <Icon>{drawerOpen ? 'menu_open' : 'menu'}</Icon>
+          </IconButton>
+        )}
         <Typography variant="h6" noWrap component="h2" flex="1 1 auto">
           {props.title}
         </Typography>

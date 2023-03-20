@@ -17,14 +17,16 @@ export const brandListVM = createSelector(brandDictionary, (b) => {
     brands,
   );
 
-  return sorted.map((b) => {
-    const flavors = sort(
-      ascend((f) => f.name),
-      Object.values(b.flavors),
-    );
+  return sorted;
 
-    return { id: b.id, name: b.name, flavors };
-  });
+  // return sorted.map((b) => {
+  //   const flavors = sort(
+  //     ascend((f) => f.name),
+  //     Object.values(b.flavors),
+  //   );
+
+  //   return { id: b.id, name: b.name, flavors };
+  // });
 });
 
 const editState = createSelector(brandFeatureSelector, (f) => f.edit);
@@ -128,3 +130,29 @@ export const allTags = createSelector(brandDictionary, (bDict) => {
     [...tagSet],
   );
 });
+
+export function selectedBrandSelectors(brandId: string) {
+  const selectedBrand = createSelector(
+    brandDictionary,
+    (dict) => dict[brandId],
+  );
+  return {
+    exists: createSelector(selectedBrand, (b) => !!b),
+    name: createSelector(selectedBrand, (b) => b.name),
+  };
+}
+
+export function flavorsForBrand(brandId: string) {
+  return createSelector(brandDictionary, (dict) => {
+    const brand = dict[brandId];
+
+    if (!brand) {
+      return [];
+    }
+
+    return sort(
+      ascend((f) => f.name),
+      Object.values(brand.flavors),
+    );
+  });
+}

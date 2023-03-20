@@ -5,7 +5,7 @@ import { Route, Routes, useParams } from 'react-router-dom';
 import { ErrorDisplay } from '../components/ErrorDisplay';
 import { LoadingDisplay } from '../components/LoadingDisplay';
 import { store } from '../store/configure';
-import { BrandsPage } from './components/Brands/BrandsPage';
+import { BrandListPage } from './components/Brands/BrandListPage';
 import { DataPageFrame } from './components/DataPageFrame';
 import { FilterPage } from './components/Filter/FilterPage';
 import { LandingPage } from './components/LandingPage';
@@ -15,6 +15,8 @@ import { fileActions } from './store/actions';
 import { fileLoadingSelectors } from './store/selectors';
 import { NotFound } from './components/NotFound';
 import { Saved } from './components/Saved';
+import { BrandsPage } from './components/Brands/BrandsPage';
+import { FlavorListPage } from './components/Brands/FlavorListPage';
 
 export const EditFeature: React.FC = () => {
   const dispatch = useDispatch<typeof store.dispatch>();
@@ -51,7 +53,10 @@ export const EditFeature: React.FC = () => {
         <Routes>
           <Route element={<DataPageFrame />}>
             <Route index element={<LandingPage />} />
-            <Route path="brands" element={<BrandsPage />} />
+            <Route path="brands" element={<BrandsPage />}>
+              <Route index element={<BrandListPage />} />
+              <Route path=":brandId" element={<FlavorListPage />} />
+            </Route>
             <Route path="filter" element={<FilterPage />} />
             <Route path="meals" element={<MealsPage />} />
             <Route path="*" element={<FallbackRoute />} />

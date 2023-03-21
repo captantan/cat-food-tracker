@@ -38,6 +38,7 @@ export const AddEditFlavor: React.FC = () => {
 
   const editName = useSelector(brandsSelectors.currentFlavorName);
   const editTags = useSelector(brandsSelectors.currentTagList);
+  const allExistingTags = useSelector(brandsSelectors.allTags);
 
   const formik = useFormik({
     initialValues: { name: editName ?? '', tags: editTags ?? [] },
@@ -97,7 +98,8 @@ export const AddEditFlavor: React.FC = () => {
           clearOnBlur
           multiple
           freeSolo
-          options={[]}
+          options={allExistingTags}
+          filterSelectedOptions
           renderInput={(params) => (
             <TextField
               variant="outlined"

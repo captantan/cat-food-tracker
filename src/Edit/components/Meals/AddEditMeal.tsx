@@ -247,7 +247,7 @@ export const AddEditMeal: React.FC = () => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}>
               {brands.map((b) => (
-                <MenuItem key={b.id} value={b.id}>
+                <MenuItem key={b.id} value={b.id} disabled={b.disabled}>
                   {b.name}
                 </MenuItem>
               ))}
@@ -267,6 +267,7 @@ export const AddEditMeal: React.FC = () => {
               id="flavor"
               name="flavor"
               label="Flavor"
+              disabled={!formik.values.brand}
               value={formik.values.flavor}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}>

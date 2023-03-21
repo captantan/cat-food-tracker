@@ -74,7 +74,11 @@ export const hasAnyFlavors = createSelector(brandDictionary, (b) =>
 
 export const brandSelectList = createSelector(brandDictionary, (bD) => {
   const brands = Object.values(bD);
-  const mapped = brands.map((b) => ({ id: b.id, name: b.name }));
+  const mapped = brands.map((b) => ({
+    id: b.id,
+    name: b.name,
+    disabled: !Object.values(b.flavors).length,
+  }));
 
   return sort(
     ascend((b) => b.name),
